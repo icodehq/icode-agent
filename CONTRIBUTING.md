@@ -1,6 +1,6 @@
-# Contributing to LoongCode
+# Contributing to iCode Agent
 
-Thanks for helping improve LoongCode. Focused bug fixes, new tools, context-management improvements, tests, and documentation are all welcome.
+Thanks for helping improve iCode Agent. Focused bug fixes, new tools, context-management improvements, tests, and documentation are all welcome.
 
 Participation in this project is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By taking part, you agree to uphold it. Report unacceptable behavior to oliverxu1996@qq.com.
 
@@ -8,7 +8,7 @@ For anything large — a new tool, a change to how context is managed, or an arc
 
 ## What fits
 
-LoongCode is a local coding agent. It reads and edits files in your repository and runs commands with your permissions. Contributions should keep that contract intact:
+iCode Agent is a local coding agent. It reads and edits files in your repository and runs commands with your permissions. Contributions should keep that contract intact:
 
 - **In scope:** the agent loop, the coding toolset, context management, CLI/TUI behavior, model protocols, tests, and documentation.
 - **Out of scope:** anything that sends your code or data somewhere other than the model endpoint you configured; execution that bypasses the user's configured permissions; or behavior that hides what the agent is doing.
@@ -18,11 +18,11 @@ If a change alters what the agent can do on a user's machine — new command exe
 
 ## Development setup
 
-LoongCode is a [Bun](https://bun.sh) workspace. Install [Bun](https://bun.sh) 1.3.13 or newer, then:
+iCode Agent is a [Bun](https://bun.sh) workspace. Install [Bun](https://bun.sh) 1.3.13 or newer, then:
 
 ```sh
-git clone https://github.com/LoongLab/LoongCode.git
-cd LoongCode
+git clone https://github.com/icodehq/icode-agent.git
+cd icode-agent
 bun install
 ```
 
@@ -64,10 +64,10 @@ Four packages, with dependencies flowing one way:
 
 | Package | Name | Depends on |
 | --- | --- | --- |
-| `packages/model` | `@loongcode/model` | — (provider protocols, usage, errors) |
-| `packages/agent` | `@loongcode/agent` | `@loongcode/model` (loop, tools, context, sessions) |
-| `packages/tui` | `@loongcode/tui` | — (terminal UI framework) |
-| `packages/cli` | `@loonglab/loongcode-cli` | `agent`, `model`, `tui` (entry point, interactive UI, print mode) |
+| `packages/model` | `@icodehq/model` | — (provider protocols, usage, errors) |
+| `packages/agent` | `@icodehq/agent` | `@icodehq/model` (loop, tools, context, sessions) |
+| `packages/tui` | `@icodehq/tui` | — (terminal UI framework) |
+| `packages/cli` | `@icodehq/icode-agent` | `agent`, `model`, `tui` (entry point, interactive UI, print mode) |
 
 Keep provider-specific code inside `packages/model`, and keep the domain logic (loop, tools, context) independent of any single provider or UI. `packages/cli` is the composition layer — it wires the others together.
 
@@ -77,7 +77,7 @@ The context-management layers (capping at capture time, request-time reduction, 
 
 ## Third-party code
 
-The published CLI bundles code from `@loongcode/tui`, which is derived from MIT-licensed third-party source; see `packages/tui/LICENSE`. If you add or move third-party code, keep its license and attribution notices with it and update [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The published CLI bundles code from `@icodehq/tui`, which is derived from MIT-licensed third-party source; see `packages/tui/LICENSE`. If you add or move third-party code, keep its license and attribution notices with it and update [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Committing
 

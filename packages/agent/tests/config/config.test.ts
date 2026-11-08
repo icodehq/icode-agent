@@ -8,7 +8,7 @@ import { formatProjectInstructions, loadProjectContext } from "../../src/config/
 import { loadResources, listPromptTemplates } from "../../src/config/resources"
 
 function tempDir(): string {
-  return mkdtempSync(join(tmpdir(), "loongcode-product-test-"))
+  return mkdtempSync(join(tmpdir(), "icode-agent-product-test-"))
 }
 
 describe("settings (AC10)", () => {
@@ -24,13 +24,13 @@ describe("settings (AC10)", () => {
 
   test("project settings override global settings with deep merge", () => {
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       const globalPath = globalSettingsPath()
       const projectPath = projectSettingsPath(dir)
       mkdirSync(dir, { recursive: true })
-      mkdirSync(join(dir, ".loongcode"), { recursive: true })
+      mkdirSync(join(dir, ".icode-agent"), { recursive: true })
       mkdirSync(globalSettingsPath().replace("/settings.json", ""), { recursive: true })
       writeFileSync(globalPath, JSON.stringify({ autoCompact: { enabled: true, thresholdPct: 90 } }))
       mkdirSync(dir, { recursive: true })
@@ -45,8 +45,8 @@ describe("settings (AC10)", () => {
       // ignored rather than merged, which is what keeps such a file loading.
       expect("model" in loaded.settings).toBe(false)
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })
@@ -56,8 +56,8 @@ describe("settings (AC10)", () => {
     // could fail a load that reached the run path. Removing the field must not
     // strand files that still carry it, so an unknown key stays inert.
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       mkdirSync(dir, { recursive: true })
       writeFileSync(globalSettingsPath(), JSON.stringify({ model: 42, theme: "light" }))
@@ -67,23 +67,23 @@ describe("settings (AC10)", () => {
       expect(loaded.settings.theme).toBe("light")
       expect("model" in loaded.settings).toBe(false)
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })
 
   test("malformed settings throw with the file path", () => {
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       mkdirSync(dir, { recursive: true })
       writeFileSync(globalSettingsPath(), "{ broken")
       expect(() => loadSettings(dir)).toThrow(/malformed|invalid settings file/)
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })
@@ -113,7 +113,7 @@ describe("project context (AC9)", () => {
 describe("resources (AC13/AC17)", () => {
   test("project prompts load without any trust state", () => {
     const dir = tempDir()
-    const promptsDir = join(dir, ".loongcode", "prompts")
+    const promptsDir = join(dir, ".icode-agent", "prompts")
     mkdirSync(promptsDir, { recursive: true })
     writeFileSync(join(promptsDir, "review.md"), "Review the diff carefully.")
 
@@ -124,7 +124,7 @@ describe("resources (AC13/AC17)", () => {
 
   test("project skills load without any trust state", () => {
     const dir = tempDir()
-    const skillDir = join(dir, ".loongcode", "skills", "demo")
+    const skillDir = join(dir, ".icode-agent", "skills", "demo")
     mkdirSync(skillDir, { recursive: true })
     const content = "description: Demo skill\n\nDo the demo thing.\n"
     writeFileSync(join(skillDir, "SKILL.md"), content)
@@ -136,8 +136,8 @@ describe("resources (AC13/AC17)", () => {
 
   test("global prompts and skills still load", () => {
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       const promptsDir = join(dir, "prompts")
       mkdirSync(promptsDir, { recursive: true })
@@ -153,8 +153,8 @@ describe("resources (AC13/AC17)", () => {
         { name: "daily", description: "Daily skill", content: skillContent, source: "user" },
       ])
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })
@@ -162,10 +162,10 @@ describe("resources (AC13/AC17)", () => {
   test("listPromptTemplates lists names and sources without reading contents, live", () => {
     const dir = tempDir()
     const userDir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = userDir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = userDir
     try {
-      const projectPrompts = join(dir, ".loongcode", "prompts")
+      const projectPrompts = join(dir, ".icode-agent", "prompts")
       mkdirSync(projectPrompts, { recursive: true })
       writeFileSync(join(projectPrompts, "review.md"), "Review the diff.")
       const userPrompts = join(userDir, "prompts")
@@ -184,8 +184,8 @@ describe("resources (AC13/AC17)", () => {
       rmSync(join(projectPrompts, "review.md"))
       expect(listPromptTemplates(dir).map(t => t.name)).not.toContain("review")
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
       rmSync(userDir, { recursive: true, force: true })
     }
@@ -194,55 +194,55 @@ describe("resources (AC13/AC17)", () => {
   test("listPromptTemplates ignores non-markdown entries and directories", () => {
     const dir = tempDir()
     const userDir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = userDir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = userDir
     try {
-      const projectPrompts = join(dir, ".loongcode", "prompts")
+      const projectPrompts = join(dir, ".icode-agent", "prompts")
       mkdirSync(join(projectPrompts, "not-a-template.md"), { recursive: true })
       writeFileSync(join(projectPrompts, "notes.txt"), "not markdown")
       writeFileSync(join(projectPrompts, "real.md"), "real")
       expect(listPromptTemplates(dir)).toEqual([{ name: "real", source: "project" }])
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
       rmSync(userDir, { recursive: true, force: true })
     }
   })
 })
 
-describe("user config directory (~/.loongcode)", () => {
-  test("configDir honors LOONGCODE_CONFIG_DIR", () => {
+describe("user config directory (~/.icode-agent)", () => {
+  test("configDir honors ICODE_AGENT_CONFIG_DIR", () => {
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       expect(configDir()).toBe(dir)
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })
 })
 
 describe("the agent config root", () => {
-  test("defaults to ~/.loongcode and honours the override", () => {
-    const previous = process.env.LOONGCODE_CONFIG_DIR
+  test("defaults to ~/.icode-agent and honours the override", () => {
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
     try {
       // The default: no override, no filesystem access — just the path.
-      // `@loongcode/model` resolves the same directory independently (its
+      // `@icodehq/model` resolves the same directory independently (its
       // package test pins the same literal), which is what makes one root
       // out of two resolvers.
-      delete process.env.LOONGCODE_CONFIG_DIR
-      expect(configDir()).toBe(join(homedir(), ".loongcode"))
+      delete process.env.ICODE_AGENT_CONFIG_DIR
+      expect(configDir()).toBe(join(homedir(), ".icode-agent"))
 
       // And the override redirects it.
-      process.env.LOONGCODE_CONFIG_DIR = "/tmp/loongcode-root-probe"
-      expect(configDir()).toBe("/tmp/loongcode-root-probe")
+      process.env.ICODE_AGENT_CONFIG_DIR = "/tmp/icode-agent-root-probe"
+      expect(configDir()).toBe("/tmp/icode-agent-root-probe")
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
     }
   })
 })
@@ -252,14 +252,14 @@ describe("the Windows shell setting", () => {
    *  fresh temporary directories, so no user file is read or written. */
   function isolated(body: (dir: string) => void): void {
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = join(dir, "global")
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = join(dir, "global")
     try {
       mkdirSync(join(dir, "global"), { recursive: true })
       body(dir)
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   }
@@ -272,7 +272,7 @@ describe("the Windows shell setting", () => {
 
   test("an explicit choice is preserved: project and global values both win over the default", () => {
     isolated(dir => {
-      mkdirSync(join(dir, ".loongcode"), { recursive: true })
+      mkdirSync(join(dir, ".icode-agent"), { recursive: true })
 
       // Global says cmd, nothing project-side: cmd is what a run gets.
       writeFileSync(globalSettingsPath(), JSON.stringify({ shell: "cmd" }))
@@ -286,7 +286,7 @@ describe("the Windows shell setting", () => {
 
   test("an unknown shell is rejected, naming the accepted values", () => {
     isolated(dir => {
-      mkdirSync(join(dir, ".loongcode"), { recursive: true })
+      mkdirSync(join(dir, ".icode-agent"), { recursive: true })
       writeFileSync(projectSettingsPath(dir), JSON.stringify({ shell: "bash" }))
       expect(() => loadSettings(dir)).toThrow(/shell must be "cmd" or "powershell"/)
     })

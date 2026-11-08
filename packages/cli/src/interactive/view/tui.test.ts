@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { SessionMessage } from "@loongcode/agent"
+import type { SessionMessage } from "@icodehq/agent"
 import { IterationBlock, ToolExecutionComponent, replayMessage, toolArgumentSummary, userMessage } from "./components"
 
 const strip = (s: string): string => s.replace(/\x1b\[[0-9;]*m/g, "")

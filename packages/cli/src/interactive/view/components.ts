@@ -1,10 +1,10 @@
-import { Markdown, type Component } from "@loongcode/tui"
-import type { SessionMessage } from "@loongcode/agent"
+import { Markdown, type Component } from "@icodehq/tui"
+import type { SessionMessage } from "@icodehq/agent"
 import { ansi, markdownTheme, theme, themeScheme } from "./theme"
 import { displayWidth, formatDuration } from "../../projection"
 
 /**
- * LoongCode chat components in the Masthead design language.
+ * iCode Agent chat components in the Masthead design language.
  *
  * The transcript is a single editorial column with a numbered work-history
  * margin: an iteration is numbered to the left of its content, tools run within

@@ -3,7 +3,7 @@ import { mkdtempSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { COMMANDS } from "../commands"
-import { LoongCodeAutocomplete } from "../input/autocomplete"
+import { ICodeAgentAutocomplete } from "../input/autocomplete"
 import { TuiHarness } from "./testing"
 
 /**
@@ -28,7 +28,7 @@ const flush = async (): Promise<void> => {
 function mount(workspace = process.cwd()): TuiHarness {
   const h = new TuiHarness({ width: 100, height: 30 }).start()
   h.editor.setAutocompleteProvider(
-    new LoongCodeAutocomplete(
+    new ICodeAgentAutocomplete(
       () => COMMANDS.map(command => ({ name: command.name, description: command.description })),
       () => workspace,
     ),
@@ -151,7 +151,7 @@ describe("slash-command keys", () => {
 
 describe("@ completion and argument state stay unchanged", () => {
   test("@ files still complete, and a miss shows no command no-match", async () => {
-    const workspace = mkdtempSync(join(tmpdir(), "loongcode-editor-ac-"))
+    const workspace = mkdtempSync(join(tmpdir(), "icode-agent-editor-ac-"))
     writeFileSync(join(workspace, "alpha.txt"), "x")
 
     const hit = mount(workspace)

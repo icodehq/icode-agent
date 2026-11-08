@@ -1,7 +1,7 @@
 /**
  * First-run onboarding through the real TUI.
  *
- * These tests mount the actual `LoongCodeTui` against a mock terminal, with the
+ * These tests mount the actual `ICodeAgentTui` against a mock terminal, with the
  * configuration directory redirected to a temporary directory, and drive the
  * real submission, command and setup paths. Nothing here reimplements the
  * application: the pickers are the application's pickers, the wizard is the
@@ -17,9 +17,9 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import type { Terminal } from "@loongcode/tui"
-import { LoongCode, type Session } from "@loongcode/agent"
-import { LoongCodeTui, SETUP_TEST_TIMEOUT_MS, modelReadiness } from "./app"
+import type { Terminal } from "@icodehq/tui"
+import { ICodeAgent, type Session } from "@icodehq/agent"
+import { ICodeAgentTui, SETUP_TEST_TIMEOUT_MS, modelReadiness } from "./app"
 import { parseScreen } from "./view/testing"
 import {
 	anthropicTextResponse,
@@ -208,30 +208,30 @@ const recordRejection = (reason: unknown): void => {
 }
 
 beforeEach(() => {
-	root = mkdtempSync(join(tmpdir(), "loongcode-onboarding-"))
+	root = mkdtempSync(join(tmpdir(), "icode-agent-onboarding-"))
 	ws = join(root, "ws")
 	configDir = join(root, "config")
 	sessionsDir = join(root, "sessions")
 	mkdirSync(ws)
 	mkdirSync(configDir)
 	mkdirSync(sessionsDir)
-	priorConfigDir = process.env.LOONGCODE_CONFIG_DIR
-	process.env.LOONGCODE_CONFIG_DIR = configDir
+	priorConfigDir = process.env.ICODE_AGENT_CONFIG_DIR
+	process.env.ICODE_AGENT_CONFIG_DIR = configDir
 	rejections.length = 0
 	process.on("unhandledRejection", recordRejection)
 })
 
 afterEach(() => {
 	process.off("unhandledRejection", recordRejection)
-	if (priorConfigDir === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-	else process.env.LOONGCODE_CONFIG_DIR = priorConfigDir
+	if (priorConfigDir === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+	else process.env.ICODE_AGENT_CONFIG_DIR = priorConfigDir
 	rmSync(root, { recursive: true, force: true })
 })
 
 interface Harness {
-	readonly agent: LoongCode
+	readonly agent: ICodeAgent
 	readonly session: Session
-	readonly app: LoongCodeTui
+	readonly app: ICodeAgentTui
 	readonly tty: Tty
 }
 
@@ -241,10 +241,10 @@ const flush = async (times = 8): Promise<void> => {
 
 /** Mounts the app the way `runCli` does: readiness resolved before construction. */
 async function mount(options: { workspace?: string; session?: Session } = {}): Promise<Harness> {
-	const agent = new LoongCode({ sessionsDir })
+	const agent = new ICodeAgent({ sessionsDir })
 	const session = options.session ?? agent.createSession(options.workspace ?? ws)
 	const tty = createTerminal()
-	const app = new LoongCodeTui({
+	const app = new ICodeAgentTui({
 		agent,
 		session,
 		terminal: tty.terminal,
@@ -1026,7 +1026,7 @@ describe("an unusable configuration", () => {
 				// file first, so it could not save.
 				expect(phaseOf(h)).toBe("setup")
 				const recovery = screen(h)
-				expect(recovery).toContain("LoongCode cannot read your model configuration.")
+				expect(recovery).toContain("iCode Agent cannot read your model configuration.")
 				expect(recovery).toContain("Retry")
 				expect(recovery).toContain("Exit")
 				// The setup sequence is never offered here: it could not save.
@@ -1553,7 +1553,7 @@ describe("editing a model from the workspace", () => {
 		await flush(16)
 		const question = screen(h)
 		expect(question).toContain("Cancel the edit?")
-		expect(question).not.toContain("Exit LoongCode")
+		expect(question).not.toContain("Exit iCode Agent")
 
 		h.tty.feed(DOWN) // `Continue editing` → `Cancel the edit`
 		await flush(4)

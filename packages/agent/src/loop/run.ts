@@ -1,4 +1,4 @@
-import type { Model, ModelUsage } from "@loongcode/model"
+import type { Model, ModelUsage } from "@icodehq/model"
 import type { PruneStats } from "../context/projection"
 import type { Session } from "../session/session"
 import type {
@@ -17,7 +17,7 @@ import { AgentLoop } from "./loop"
 import type { RewindRecorder } from "../session/checkpoint"
 
 /** Everything a single autonomous run needs. The model is injected, which
- *  is the test seam: production resolves it via `@loongcode/model`
+ *  is the test seam: production resolves it via `@icodehq/model`
  *  ModelManager, tests supply a scripted fake. */
 export interface RunDeps {
   session: Session

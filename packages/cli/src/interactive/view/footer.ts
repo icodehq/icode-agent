@@ -1,4 +1,4 @@
-import type { Component } from "@loongcode/tui"
+import type { Component } from "@icodehq/tui"
 import { theme } from "./theme"
 import {
   displayWidth,

@@ -1,4 +1,4 @@
-import type { CompactionOutcome, Session } from "@loongcode/agent"
+import type { CompactionOutcome, Session } from "@icodehq/agent"
 
 /** The application's transient view of one manual compaction. */
 export interface CompactionObserver {

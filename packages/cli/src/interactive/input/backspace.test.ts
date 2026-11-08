@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
-import { matchesKey } from "@loongcode/tui"
+import { matchesKey } from "@icodehq/tui"
 import { TuiHarness } from "../view/testing"
 
 /**

@@ -1,4 +1,4 @@
-import type { ModelUsage } from "@loongcode/model"
+import type { ModelUsage } from "@icodehq/model"
 import type {
   CompactionSkipReason,
   CompactionTrigger,

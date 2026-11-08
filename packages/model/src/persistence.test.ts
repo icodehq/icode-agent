@@ -12,21 +12,21 @@ import { testConfig } from "./test-support"
  * cannot drift into reading different directories.
  */
 describe("model persistence — one config root", () => {
-  test("defaults to ~/.loongcode/models.json", () => {
-    const previous = process.env.LOONGCODE_CONFIG_DIR
+  test("defaults to ~/.icode-agent/models.json", () => {
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
     try {
-      delete process.env.LOONGCODE_CONFIG_DIR
+      delete process.env.ICODE_AGENT_CONFIG_DIR
       // Path arithmetic only: nothing is read or written under the real home.
-      expect(statePath()).toBe(join(homedir(), ".loongcode", "models.json"))
+      expect(statePath()).toBe(join(homedir(), ".icode-agent", "models.json"))
     } finally {
-      if (previous !== undefined) process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous !== undefined) process.env.ICODE_AGENT_CONFIG_DIR = previous
     }
   })
 
-  test("LOONGCODE_CONFIG_DIR redirects where state is read and written", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-persistence-"))
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+  test("ICODE_AGENT_CONFIG_DIR redirects where state is read and written", () => {
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-persistence-"))
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       expect(statePath()).toBe(join(dir, "models.json"))
       expect(loadState()).toEqual({ version: 1, models: [], activeModelId: null })
@@ -36,8 +36,8 @@ describe("model persistence — one config root", () => {
       expect(existsSync(join(dir, "models.json"))).toBe(true)
       expect(JSON.parse(readFileSync(join(dir, "models.json"), "utf-8")).version).toBe(1)
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })

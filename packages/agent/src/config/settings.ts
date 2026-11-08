@@ -9,7 +9,7 @@ export type WindowsShell = "cmd" | "powershell"
 
 /** Runtime-tunable settings: global file merged under project
  *  file (project wins), nested objects merge recursively. */
-export interface LoongCodeSettings {
+export interface ICodeAgentSettings {
   autoCompact?: {
     /** Proactive compaction before the input budget is exhausted. Default on. */
     enabled: boolean
@@ -25,14 +25,14 @@ export interface LoongCodeSettings {
   shell?: WindowsShell
 }
 
-const DEFAULTS: LoongCodeSettings = {
+const DEFAULTS: ICodeAgentSettings = {
   autoCompact: { enabled: true, thresholdPct: 80 },
   theme: "dark",
   shell: "powershell",
 }
 
 export interface LoadedSettings {
-  settings: LoongCodeSettings
+  settings: ICodeAgentSettings
   /** Merged view for display; sources for diagnostics. */
   globalPath: string
   projectPath: string | null
@@ -44,12 +44,12 @@ export function globalSettingsPath(): string {
 }
 
 export function projectSettingsPath(cwd: string): string {
-  return join(cwd, ".loongcode", "settings.json")
+  return join(cwd, ".icode-agent", "settings.json")
 }
 
 /** Reads and validates one settings file; invalid JSON or shape throws
  *  `configuration_error`-style Error (callers surface it). */
-function readSettingsFile(path: string, exists: boolean): Partial<LoongCodeSettings> {
+function readSettingsFile(path: string, exists: boolean): Partial<ICodeAgentSettings> {
   if (!exists) return {}
   let parsed: unknown
   try {
@@ -60,12 +60,12 @@ function readSettingsFile(path: string, exists: boolean): Partial<LoongCodeSetti
   return validateSettings(parsed, path)
 }
 
-function validateSettings(input: unknown, path: string): Partial<LoongCodeSettings> {
+function validateSettings(input: unknown, path: string): Partial<ICodeAgentSettings> {
   if (typeof input !== "object" || input === null || Array.isArray(input)) {
     throw new Error(`invalid settings file ${path}: expected an object`)
   }
   const record = input as Record<string, unknown>
-  const out: Partial<LoongCodeSettings> = {}
+  const out: Partial<ICodeAgentSettings> = {}
   // Unknown keys are ignored rather than rejected, which is what lets a file
   // written by an older version keep loading: a stale `model` key, for example,
   // is simply not read. Only the keys below have any meaning.

@@ -2,25 +2,25 @@ import { describe, expect, test } from "bun:test"
 import { mkdtempSync, rmSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { LoongCode, type Session } from "@loongcode/agent"
+import { ICodeAgent, type Session } from "@icodehq/agent"
 import { cloneSession, forkCandidates, forkSession } from "./operations"
 
 interface Fixture {
   readonly dir: string
   readonly sessionsDir: string
-  readonly agent: LoongCode
+  readonly agent: ICodeAgent
   reload(id: string): Promise<Session>
   cleanup(): void
 }
 
 function fixture(): Fixture {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-session-ops-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-session-ops-"))
   const sessionsDir = join(dir, "sessions")
   return {
     dir,
     sessionsDir,
-    agent: new LoongCode({ sessionsDir }),
-    reload: async (id: string): Promise<Session> => await new LoongCode({ sessionsDir }).loadSession(id),
+    agent: new ICodeAgent({ sessionsDir }),
+    reload: async (id: string): Promise<Session> => await new ICodeAgent({ sessionsDir }).loadSession(id),
     cleanup: () => rmSync(dir, { recursive: true, force: true }),
   }
 }

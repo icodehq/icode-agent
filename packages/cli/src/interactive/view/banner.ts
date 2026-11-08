@@ -1,11 +1,11 @@
-import type { Component } from "@loongcode/tui"
+import type { Component } from "@icodehq/tui"
 import { displayWidth } from "../../projection"
-import { LOONGCODE_VERSION } from "../../version"
+import { ICODE_AGENT_VERSION } from "../../version"
 import { truncateVisible, wrapBody } from "./components"
 import { theme, type Style } from "./theme"
 
 /**
- * The Masthead: LoongCode's empty-state identity.
+ * The Masthead: iCode Agent's empty-state identity.
  *
  * It is editorial rather than a splash screen: a left-aligned wordmark with the
  * version set against the right edge, a hairline rule, and a workspace line
@@ -22,7 +22,7 @@ import { theme, type Style } from "./theme"
  */
 
 /** The product wordmark shown in the masthead. */
-export const WORDMARK = "LoongCode"
+export const WORDMARK = "iCode Agent"
 
 /** The opening line, stated once; the masthead is the empty-workspace state. */
 export const READY_LINE = "Ready when you are. Describe a task, or type / for commands."
@@ -138,7 +138,7 @@ export interface HelloHeaderInput {
 
 /** The masthead block: wordmark, rule, and the workspace/branch/model line. */
 function masthead(width: number, input: HelloHeaderInput): string[] {
-	const version = input.version ?? LOONGCODE_VERSION
+	const version = input.version ?? ICODE_AGENT_VERSION
 	const context = [input.branch, input.model].filter((v): v is string => v !== undefined && v.length > 0).join("  ·  ")
 	return [
 		blank(width),

@@ -1,7 +1,7 @@
 import { readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
-import type { AutocompleteProvider, AutocompleteSuggestions } from "@loongcode/tui"
-import { IGNORED_WORKSPACE_ENTRIES } from "@loongcode/agent"
+import type { AutocompleteProvider, AutocompleteSuggestions } from "@icodehq/tui"
+import { IGNORED_WORKSPACE_ENTRIES } from "@icodehq/agent"
 
 const MAX_FILES = 200
 
@@ -18,11 +18,11 @@ function matchRank(name: string, needle: string): number {
 }
 
 /**
- * Completions for the LoongCode editor:
+ * Completions for the iCode Agent editor:
  * - `/` at the start of the input completes commands (and prompt templates).
  * - `@` anywhere completes workspace file paths.
  */
-export class LoongCodeAutocomplete implements AutocompleteProvider {
+export class ICodeAgentAutocomplete implements AutocompleteProvider {
   triggerCharacters = ["/", "@"]
 
   constructor(

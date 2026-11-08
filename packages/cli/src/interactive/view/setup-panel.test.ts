@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { Text } from "@loongcode/tui"
+import { Text } from "@icodehq/tui"
 import { displayWidth } from "../../projection"
 import { SetupPanel } from "./setup-panel"
 

@@ -51,7 +51,7 @@ describe("runProcess", () => {
     })
 
     test("the cwd option is the child's working directory", async () => {
-      const dir = mkdtempSync(join(tmpdir(), "loongcode-process-test-"))
+      const dir = mkdtempSync(join(tmpdir(), "icode-agent-process-test-"))
       try {
         const result = await runProcess("/bin/sh", ["-c", "pwd"], { cwd: dir })
         expect(realpathSync(result.stdout.trim())).toBe(realpathSync(dir))
@@ -61,8 +61,8 @@ describe("runProcess", () => {
     })
 
     test("explicit env replaces the environment", async () => {
-      const result = await runProcess("/bin/sh", ["-c", "printf %s \"$LOONGCODE_PROCESS_TEST\""], {
-        env: { LOONGCODE_PROCESS_TEST: "sentinel", PATH: process.env.PATH },
+      const result = await runProcess("/bin/sh", ["-c", "printf %s \"$ICODE_AGENT_PROCESS_TEST\""], {
+        env: { ICODE_AGENT_PROCESS_TEST: "sentinel", PATH: process.env.PATH },
       })
       expect(result.stdout).toBe("sentinel")
     })
@@ -105,7 +105,7 @@ describe("runProcess", () => {
     })
 
     test("the cwd option is the child's working directory", async () => {
-      const dir = mkdtempSync(join(tmpdir(), "loongcode-process-test-"))
+      const dir = mkdtempSync(join(tmpdir(), "icode-agent-process-test-"))
       try {
         writeFileSync(join(dir, "marker.txt"), "here")
         const result = await runProcess(cmd(), ["/d", "/s", "/c", "dir /b"], { cwd: dir })
@@ -116,8 +116,8 @@ describe("runProcess", () => {
     })
 
     test("explicit env replaces the environment", async () => {
-      const result = await runProcess(cmd(), ["/d", "/s", "/c", "echo %LOONGCODE_PROCESS_TEST%"], {
-        env: { LOONGCODE_PROCESS_TEST: "sentinel", ComSpec: cmd(), PATH: process.env.PATH },
+      const result = await runProcess(cmd(), ["/d", "/s", "/c", "echo %ICODE_AGENT_PROCESS_TEST%"], {
+        env: { ICODE_AGENT_PROCESS_TEST: "sentinel", ComSpec: cmd(), PATH: process.env.PATH },
       })
       expect(result.stdout).toContain("sentinel")
     })

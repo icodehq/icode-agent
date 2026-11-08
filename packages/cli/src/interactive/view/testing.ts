@@ -1,4 +1,4 @@
-import { Editor, ScrollView, TuiAltScreen, type Component, type Terminal } from "@loongcode/tui"
+import { Editor, ScrollView, TuiAltScreen, type Component, type Terminal } from "@icodehq/tui"
 import { buildTuiLayout } from "./layout"
 import { PickerSlot, Selector, pickerVisibleItems, type SelectorItem } from "./selector"
 

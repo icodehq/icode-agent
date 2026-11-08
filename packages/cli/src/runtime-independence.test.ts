@@ -91,7 +91,7 @@ describe("runtime independence", () => {
     expect(cli.dependencies).toBeUndefined()
   })
 
-  const BUNDLE = join(PACKAGES, "cli/dist/loongcode.js")
+  const BUNDLE = join(PACKAGES, "cli/dist/icode-agent.js")
 
   /**
    * The bundle is a build artifact and is not in version control, so it can be

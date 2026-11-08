@@ -1,7 +1,7 @@
 /**
- * `@loongcode/agent` — the LoongCode Coding Agent runtime.
+ * `@icodehq/agent` — the iCode Agent runtime.
  *
- * Public surface: the `LoongCode` runtime root (session lifecycle + the
+ * Public surface: the `ICodeAgent` runtime root (session lifecycle + the
  * autonomous `run()` door), the durable session types, the configuration
  * adapters, and the context-budget and compaction capabilities the
  * application composes. Tools and the loop are internal details of `run()`.
@@ -9,8 +9,8 @@
 
 export { contextBudget } from "./context/budget"
 export type { ContextBudget } from "./context/budget"
-export { LoongCode } from "./loongcode"
-export type { LoongCodeOptions, RunResult } from "./loongcode"
+export { ICodeAgent } from "./icode-agent"
+export type { ICodeAgentOptions, RunResult } from "./icode-agent"
 export { Session, UNKNOWN_OUTCOME_ERROR, type RecoveryReport } from "./session/session"
 export { SessionStore } from "./session/store"
 export { ToolLedger, type ToolLedgerEntry, type ToolLedgerStatus } from "./session/ledger"

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import { Markdown } from "@loongcode/tui"
+import { Markdown } from "@icodehq/tui"
 import { assistantMessage } from "./components"
 import { markdownTheme, setThemeColorDepth, setThemeScheme, themeScheme } from "./theme"
 

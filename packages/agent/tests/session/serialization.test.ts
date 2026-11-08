@@ -12,20 +12,20 @@ import { describe, expect, test } from "bun:test"
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import type { ModelMessage } from "@loongcode/model"
+import type { ModelMessage } from "@icodehq/model"
 import { Compactor } from "../../src/context/compaction"
-import { LoongCode } from "../../src/loongcode"
+import { ICodeAgent } from "../../src/icode-agent"
 import { Session } from "../../src/session/session"
 import type { SessionMessage } from "../../src/session/types"
 import { FakeModel, textResponse } from "../support/testing"
 
 function tempDir(): { dir: string; cleanup: () => void } {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-serialization-test-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-serialization-test-"))
   return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) }
 }
 
 function sess(): Session {
-  const session = Session.create({ cwd: "/tmp/loongcode-boundary-test" })
+  const session = Session.create({ cwd: "/tmp/icode-agent-boundary-test" })
   session.onCheckpoint(async () => {})
   return session
 }
@@ -221,8 +221,8 @@ describe("session summaries use the validating parser", () => {
     const sessionsDir = join(dir, "sessions")
     return {
       sessionsDir,
-      agent: new LoongCode({ sessionsDir }),
-      fresh: () => new LoongCode({ sessionsDir }),
+      agent: new ICodeAgent({ sessionsDir }),
+      fresh: () => new ICodeAgent({ sessionsDir }),
       cleanup,
     }
   }

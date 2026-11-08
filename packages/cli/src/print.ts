@@ -1,4 +1,4 @@
-import type { LoongCode, RunSummary, Session } from "@loongcode/agent"
+import type { ICodeAgent, RunSummary, Session } from "@icodehq/agent"
 import { resultLine } from "./projection"
 
 /** Where the non-interactive application writes. */
@@ -17,7 +17,7 @@ export interface PrintIO {
  * reached a final answer (`stop`), `1` otherwise.
  */
 export async function runPrint(
-  agent: LoongCode,
+  agent: ICodeAgent,
   session: Session,
   task: string,
   jsonMode: boolean,
@@ -43,7 +43,7 @@ export async function runPrint(
       ? last.content.filter(part => part.type === "text").map(part => part.text).join("")
       : ""
     io.stdout(text + "\n")
-    if (result.error !== undefined) io.stderr(`loongcode: ${result.error}\n`)
+    if (result.error !== undefined) io.stderr(`icode-agent: ${result.error}\n`)
   }
   return result.finishReason === "stop" ? 0 : 1
 }

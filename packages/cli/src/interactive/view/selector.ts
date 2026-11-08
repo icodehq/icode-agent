@@ -1,4 +1,4 @@
-import { Box, Container, TruncatedText, type Component } from "@loongcode/tui"
+import { Box, Container, TruncatedText, type Component } from "@icodehq/tui"
 import { ansi, surface, theme } from "./theme"
 
 export interface SelectorItem {

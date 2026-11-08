@@ -1,19 +1,19 @@
 import { realpathSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { LoongCode } from "@loongcode/agent"
-import { LOONGCODE_VERSION } from "./version"
-import { LoongCodeTui, modelReadiness } from "./interactive/app"
+import { ICodeAgent } from "@icodehq/agent"
+import { ICODE_AGENT_VERSION } from "./version"
+import { ICodeAgentTui, modelReadiness } from "./interactive/app"
 import { runPrint } from "./print"
 
 /**
- * LoongCode entry point.
+ * iCode Agent entry point.
  *
  * ```txt
  * bun packages/cli/src/main.ts [options] [workspace-directory]
  * ```
  *
  * The same entry point backs every distribution: running from a checkout, the
- * npm package's bundled `loongcode` binary, and the standalone release build.
+ * npm package's bundled `icode-agent` binary, and the standalone release build.
  * Nothing about the CLI differs between them.
  *
  * Options:
@@ -26,7 +26,7 @@ import { runPrint } from "./print"
  *   --help, -h           Print usage
  *
  * The workspace directory defaults to the current directory. Model
- * configuration comes from `@loongcode/model` ModelManager (the configured
+ * configuration comes from `@icodehq/model` ModelManager (the configured
  * active model) — or use /model inside the TUI on first run.
  *
  * Interactive mode needs a terminal, so it is refused when stdin is not a TTY
@@ -77,7 +77,7 @@ function parseArgs(argv: string[]): CliArgs {
   return args
 }
 
-async function resolveSession(agent: LoongCode, args: CliArgs): Promise<{ session: ReturnType<LoongCode["createSession"]> | null; label: string }> {
+async function resolveSession(agent: ICodeAgent, args: CliArgs): Promise<{ session: ReturnType<ICodeAgent["createSession"]> | null; label: string }> {
   if (args.resumeId !== null) {
     return { session: await agent.loadSession(args.resumeId), label: args.resumeId }
   }
@@ -101,21 +101,21 @@ export interface CliIO {
 }
 
 export function helpText(): string {
-  return `LoongCode — standalone coding agent
+  return `iCode Agent — standalone coding agent
 
-usage: loongcode [options] [workspace]
+usage: icode-agent [options] [workspace]
 
   -p, --print <task>   run one task and print the final response
       --mode json      with -p: emit RunEvents as JSON lines
   -c, --continue       continue the most recent session in the workspace
       --resume <id>    resume a specific session
       --cwd <dir>      workspace directory (default: current directory)
-  -v, --version        print the LoongCode version
+  -v, --version        print the iCode Agent version
   -h, --help           show this help
 
-first run: LoongCode sets up a model before the workspace opens —
+first run: iCode Agent sets up a model before the workspace opens —
 choose one you have configured or add one (protocol, endpoint,
-model name, API key), or write ~/.loongcode/models.json directly.`
+model name, API key), or write ~/.icode-agent/models.json directly.`
 }
 
 /**
@@ -128,7 +128,7 @@ export async function runCli(argv: string[], io: CliIO): Promise<number | null> 
     return 0
   }
   if (argv.includes("--version") || argv.includes("-v")) {
-    io.stdout(LOONGCODE_VERSION + "\n")
+    io.stdout(ICODE_AGENT_VERSION + "\n")
     return 0
   }
 
@@ -137,7 +137,7 @@ export async function runCli(argv: string[], io: CliIO): Promise<number | null> 
 
   // ── non-interactive mode ─────────────────────────────────────────
   if (args.print !== null) {
-    const agent = new LoongCode()
+    const agent = new ICodeAgent()
     const { session } = await resolveSession(agent, args)
     const active = session ?? agent.createSession(args.cwd)
     return runPrint(agent, active, args.print, args.jsonMode, io)
@@ -149,13 +149,13 @@ export async function runCli(argv: string[], io: CliIO): Promise<number | null> 
   // pipe, so refuse before starting it rather than hang.
   if (!io.stdinIsTTY) {
     io.stderr(
-      `loongcode: stdin is not a terminal, so the interactive UI cannot start.\n` +
-      `Run a single task instead:  loongcode -p "<task>"\n`,
+      `icode-agent: stdin is not a terminal, so the interactive UI cannot start.\n` +
+      `Run a single task instead:  icode-agent -p "<task>"\n`,
     )
     return 1
   }
 
-  const agent = new LoongCode()
+  const agent = new ICodeAgent()
   const { session: resumed, label } = await resolveSession(agent, args)
   const session = resumed ?? agent.createSession(args.cwd)
   // Resolved before the TUI takes over the screen, so the first frame already
@@ -164,7 +164,7 @@ export async function runCli(argv: string[], io: CliIO): Promise<number | null> 
   // or unreadable puts it into setup, and the normal working interface is not
   // reachable until a fresh reading comes back ready.
   const readiness = await modelReadiness(agent)
-  const app = new LoongCodeTui({ agent, session, label, readiness })
+  const app = new ICodeAgentTui({ agent, session, label, readiness })
   app.start()
   return null
 }

@@ -8,7 +8,7 @@
  * the model can still get back.
  */
 import { describe, expect, test } from "bun:test"
-import type { ModelMessage, ModelRequest } from "@loongcode/model"
+import type { ModelMessage, ModelRequest } from "@icodehq/model"
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
@@ -39,7 +39,7 @@ function writeNotes(dir: string, lines: readonly number[]): string[] {
 }
 
 function notesDir(count: number): { dir: string; paths: string[]; cleanup: () => void } {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-overflow-recovery-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-overflow-recovery-"))
   return {
     dir,
     paths: writeNotes(dir, Array.from({ length: count }, () => 400)),
@@ -50,7 +50,7 @@ function notesDir(count: number): { dir: string; paths: string[]; cleanup: () =>
 /** Notes of deliberately different sizes, so how far a recovery reaches is
  *  decided by the fixture rather than by the file system. */
 function sizedNotesDir(lines: readonly number[]): { dir: string; paths: string[]; cleanup: () => void } {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-overflow-recovery-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-overflow-recovery-"))
   return { dir, paths: writeNotes(dir, lines), cleanup: () => rmSync(dir, { recursive: true, force: true }) }
 }
 

@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test"
-import { LoongCode } from "@loongcode/agent"
-import type { ModelConfig } from "@loongcode/model"
+import { ICodeAgent } from "@icodehq/agent"
+import type { ModelConfig } from "@icodehq/model"
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { COMMANDS, findCommand, type CommandContext, type CompactResult } from "./commands"
-import { LoongCodeAutocomplete } from "./input/autocomplete"
+import { ICodeAgentAutocomplete } from "./input/autocomplete"
 
 describe("commands (AC12)", () => {
   test("core commands exist with descriptions", () => {
@@ -63,7 +63,7 @@ describe("commands (AC12)", () => {
   })
 
   test("autocomplete proposes the consolidated surface and nothing removed", async () => {
-    const provider = new LoongCodeAutocomplete(
+    const provider = new ICodeAgentAutocomplete(
       () => COMMANDS.map(command => ({ name: command.name, description: command.description })),
       () => process.cwd(),
     )
@@ -88,7 +88,7 @@ describe("commands (AC12)", () => {
       expect(help).not.toContain(name)
     }
 
-    const provider = new LoongCodeAutocomplete(
+    const provider = new ICodeAgentAutocomplete(
       () => COMMANDS.map(command => ({ name: command.name, description: command.description })),
       () => process.cwd(),
     )
@@ -144,7 +144,7 @@ describe("commands (AC12)", () => {
   })
 
   test("autocomplete proposes /model and never advertises subcommands", async () => {
-    const provider = new LoongCodeAutocomplete(
+    const provider = new ICodeAgentAutocomplete(
       () => COMMANDS.map(command => ({ name: command.name, description: command.description })),
       () => process.cwd(),
     )

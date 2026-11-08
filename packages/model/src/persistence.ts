@@ -18,8 +18,8 @@ interface PersistedState {
 const EMPTY_STATE: PersistedState = { version: 1, models: [], activeModelId: null }
 
 /**
- * Location of the configuration file: `~/.loongcode/models.json`, overridable
- * with `LOONGCODE_CONFIG_DIR` so tests and alternative installs can redirect
+ * Location of the configuration file: `~/.icode-agent/models.json`, overridable
+ * with `ICODE_AGENT_CONFIG_DIR` so tests and alternative installs can redirect
  * it — the same location the rest of the runtime uses.
  *
  * Exported so the one config root this runtime has can be ASSERTED rather
@@ -27,7 +27,7 @@ const EMPTY_STATE: PersistedState = { version: 1, models: [], activeModelId: nul
  * and the two must not drift.
  */
 export function statePath(): string {
-  const base = process.env.LOONGCODE_CONFIG_DIR ?? join(homedir(), ".loongcode")
+  const base = process.env.ICODE_AGENT_CONFIG_DIR ?? join(homedir(), ".icode-agent")
   return join(base, "models.json")
 }
 

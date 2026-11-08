@@ -16,7 +16,7 @@ import { grepTool } from "../../src/tools/grep"
 const unixOnly = process.platform !== "win32"
 
 function workspace(): { dir: string; cleanup: () => void } {
-  const dir = realpathSync(mkdtempSync(join(tmpdir(), "loongcode-grep-")))
+  const dir = realpathSync(mkdtempSync(join(tmpdir(), "icode-agent-grep-")))
   return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) }
 }
 

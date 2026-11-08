@@ -1,4 +1,4 @@
-# @loongcode/tui
+# @icodehq/tui
 
 Terminal UI framework package.
 

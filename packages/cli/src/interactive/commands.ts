@@ -1,4 +1,4 @@
-import type { CompactionOutcome, Session } from "@loongcode/agent"
+import type { CompactionOutcome, Session } from "@icodehq/agent"
 
 /**
  * Outcome of a manual `/compact`, including cases the compaction layer cannot
@@ -14,7 +14,7 @@ export type CompactResult =
 
 /** Facade the commands act through — implemented by the TUI app. */
 export interface CommandContext {
-  agent(): import("@loongcode/agent").LoongCode
+  agent(): import("@icodehq/agent").ICodeAgent
   session(): Session
   /** Replaces the active session (new/switch/fork/clone) and replays it. */
   setSession(session: Session): void
@@ -112,7 +112,7 @@ const MODEL_EDIT = "\u0000model:edit"
 const MODEL_REMOVE = "\u0000model:remove"
 
 /** A user-facing message derived from a thrown value. Never contains secrets:
- *  ModelError messages carry no API key (see @loongcode/model). */
+ *  ModelError messages carry no API key (see @icodehq/model). */
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
@@ -140,7 +140,7 @@ function refuseWhileModelChangeBlocked(ctx: CommandContext): boolean {
 function pickModel(
   ctx: CommandContext,
   title: string,
-  models: readonly import("@loongcode/model").Model[],
+  models: readonly import("@icodehq/model").Model[],
   active: string | undefined,
 ): Promise<string | null> {
   return ctx.pick(
@@ -320,7 +320,7 @@ export const COMMANDS: Command[] = [
   },
   {
     name: "quit",
-    description: "Exit LoongCode",
+    description: "Exit iCode Agent",
     execute(ctx) {
       ctx.quit()
     },

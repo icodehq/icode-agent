@@ -2,18 +2,18 @@ import { describe, expect, test } from "bun:test"
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { LoongCode } from "../../src/loongcode"
+import { ICodeAgent } from "../../src/icode-agent"
 
 function tempDir(): { dir: string; cleanup: () => void } {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-session-store-test-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-session-store-test-"))
   return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) }
 }
 
-describe("LoongCode.deleteSession", () => {
+describe("ICodeAgent.deleteSession", () => {
   test("removes the snapshot and evicts the cached session", async () => {
     const { dir, cleanup } = tempDir()
     const sessionsDir = join(dir, "sessions")
-    const agent = new LoongCode({ sessionsDir })
+    const agent = new ICodeAgent({ sessionsDir })
     const session = agent.createSession(join(dir, "ws"))
     session.pushUser("hello")
     await session.checkpoint()
@@ -27,13 +27,13 @@ describe("LoongCode.deleteSession", () => {
     // The cache was evicted, so a load cannot resurrect it from memory...
     await expect(agent.loadSession(session.id)).rejects.toBeDefined()
     // ...and a fresh runtime cannot resurrect it from disk.
-    await expect(new LoongCode({ sessionsDir }).loadSession(session.id)).rejects.toBeDefined()
+    await expect(new ICodeAgent({ sessionsDir }).loadSession(session.id)).rejects.toBeDefined()
     cleanup()
   })
 
   test("deleting an already-absent session is a no-op", async () => {
     const { dir, cleanup } = tempDir()
-    const agent = new LoongCode({ sessionsDir: join(dir, "sessions") })
+    const agent = new ICodeAgent({ sessionsDir: join(dir, "sessions") })
     await agent.deleteSession("does-not-exist")
     expect(await agent.sessionSummaries()).toEqual([])
     cleanup()
@@ -44,7 +44,7 @@ describe("sessionSummaries cwd provenance", () => {
   test("distinguishes a persisted cwd from one defaulted on load", async () => {
     const { dir, cleanup } = tempDir()
     const sessionsDir = join(dir, "sessions")
-    const agent = new LoongCode({ sessionsDir })
+    const agent = new ICodeAgent({ sessionsDir })
     const session = agent.createSession(join(dir, "ws"))
     session.pushUser("hi")
     await session.checkpoint()

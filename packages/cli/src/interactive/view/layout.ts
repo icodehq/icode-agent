@@ -1,4 +1,4 @@
-import { ScrollView, VStack, WindowedStack, type Component } from "@loongcode/tui"
+import { ScrollView, VStack, WindowedStack, type Component } from "@icodehq/tui"
 
 /**
  * The pieces the interactive TUI pins around its scrollable conversation.
@@ -49,7 +49,7 @@ export function fixedChromeRows(components: readonly Component[], width: number)
 }
 
 /**
- * Compose the approved LoongCode TUI layout:
+ * Compose the approved iCode Agent TUI layout:
  *
  * ```text
  * VStack

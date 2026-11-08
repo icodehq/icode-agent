@@ -8,7 +8,7 @@
  * memory".
  *
  * The command-driven lifecycle tests (/fork, /clone, /import) live with the
- * application in `@loonglab/loongcode-cli`; this file covers the runtime mechanisms:
+ * application in `@icodehq/icode-agent`; this file covers the runtime mechanisms:
  * compaction durability and run recovery ordering.
  */
 import { describe, expect, test } from "bun:test"
@@ -17,7 +17,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { Compactor } from "../../src/context/compaction"
 import { runTask } from "../../src/loop/run"
-import { LoongCode } from "../../src/loongcode"
+import { ICodeAgent } from "../../src/icode-agent"
 import { Session } from "../../src/session/session"
 import { FakeModel, textResponse, toolCallResponse } from "../support/testing"
 import type { Tool } from "../../src/tools"
@@ -25,22 +25,22 @@ import type { Tool } from "../../src/tools"
 interface Fixture {
   readonly dir: string
   readonly sessionsDir: string
-  readonly agent: LoongCode
+  readonly agent: ICodeAgent
   /** A second runtime over the same store — "the process restarted". */
   reload(id: string): Promise<Session>
   cleanup(): void
 }
 
 function fixture(): Fixture {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-lifecycle-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-lifecycle-"))
   const sessionsDir = join(dir, "sessions")
-  const agent = new LoongCode({ sessionsDir, model: new FakeModel([textResponse("ok")]) })
+  const agent = new ICodeAgent({ sessionsDir, model: new FakeModel([textResponse("ok")]) })
   return {
     dir,
     sessionsDir,
     agent,
     reload: async (id: string): Promise<Session> =>
-      await new LoongCode({ sessionsDir }).loadSession(id),
+      await new ICodeAgent({ sessionsDir }).loadSession(id),
     cleanup: () => rmSync(dir, { recursive: true, force: true }),
   }
 }

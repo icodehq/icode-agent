@@ -1,4 +1,4 @@
-import { Container, Text, type Component } from "@loongcode/tui"
+import { Container, Text, type Component } from "@icodehq/tui"
 import { displayWidth, truncatePlain } from "../../projection"
 import { ansi, theme } from "./theme"
 

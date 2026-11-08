@@ -1,5 +1,5 @@
 /**
- * Terminal UI framework used by the LoongCode TUI.
+ * Terminal UI framework used by the iCode Agent TUI.
  */
 
 export { TuiMainScreen } from "./tui-main-screen.ts"

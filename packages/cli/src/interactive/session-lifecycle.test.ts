@@ -7,34 +7,34 @@
  * only way to tell "durable" from "still in memory".
  *
  * The runtime-level compaction and recovery tests live with the runtime in
- * `@loongcode/agent`.
+ * `@icodehq/agent`.
  */
 import { describe, expect, test } from "bun:test"
 import { mkdtempSync, rmSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { LoongCode, type Session } from "@loongcode/agent"
+import { ICodeAgent, type Session } from "@icodehq/agent"
 import { cloneSession, forkSession } from "./session/operations"
 
 interface Fixture {
   readonly dir: string
   readonly sessionsDir: string
-  readonly agent: LoongCode
+  readonly agent: ICodeAgent
   /** A second runtime over the same store — "the process restarted". */
   reload(id: string): Promise<Session>
   cleanup(): void
 }
 
 function fixture(): Fixture {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-lifecycle-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-lifecycle-"))
   const sessionsDir = join(dir, "sessions")
-  const agent = new LoongCode({ sessionsDir })
+  const agent = new ICodeAgent({ sessionsDir })
   return {
     dir,
     sessionsDir,
     agent,
     reload: async (id: string): Promise<Session> =>
-      await new LoongCode({ sessionsDir }).loadSession(id),
+      await new ICodeAgent({ sessionsDir }).loadSession(id),
     cleanup: () => rmSync(dir, { recursive: true, force: true }),
   }
 }

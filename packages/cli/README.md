@@ -1,4 +1,4 @@
-# LoongCode
+# iCode Agent
 
 ### The coding agent that won't burn your context window.
 
@@ -9,14 +9,14 @@ in an interactive terminal UI.
 
 Running a long task is where coding agents fall apart: the context window fills
 with old file reads and command output, the agent starts forgetting what it did,
-and every request costs more. LoongCode treats context as a budget to defend, not
+and every request costs more. iCode Agent treats context as a budget to defend, not
 a bucket to fill — so long sessions stay sharp, coherent, and affordable. See
 [Context that lasts](#context-that-lasts).
 
 ## Install
 
 [Node.js](https://nodejs.org) 22 or newer is required (npm ships with it).
-LoongCode is a single platform-independent package: the same install works on
+iCode Agent is a single platform-independent package: the same install works on
 Windows, macOS, and Linux, on both x64 and arm64.
 
 Cross-platform compatibility improvements are implemented and automated
@@ -24,12 +24,12 @@ verification has been performed on Linux; native Windows and macOS verification
 remains pending.
 
 ```sh
-npm install -g @loonglab/loongcode-cli
+npm install -g @icodehq/icode-agent
 cd my-project
-loongcode
+icode-agent
 ```
 
-On first launch no model is active, and LoongCode says so: it opens the setup
+On first launch no model is active, and iCode Agent says so: it opens the setup
 flow (protocol `openai` or `anthropic`, endpoint, model name, API key) before
 the workspace appears, and the normal interface is not reachable until a model
 is active. `/model` is that same flow — it lists the models you have configured
@@ -67,20 +67,20 @@ session keeps every result.
 ## Scripting
 
 ```sh
-loongcode -p "run the tests and report failures"   # print mode
-loongcode --mode json -p "find TODO comments"      # JSON event stream
-loongcode -c -p "now fix what you found"           # continue last session
+icode-agent -p "run the tests and report failures"   # print mode
+icode-agent --mode json -p "find TODO comments"      # JSON event stream
+icode-agent -c -p "now fix what you found"           # continue last session
 ```
 
 ## Project instructions
 
 `AGENTS.md` (or `CLAUDE.md`) in the repository root is loaded into the
-agent's system prompt. `.loongcode/settings.json`, `.loongcode/prompts/*.md`
-and `.loongcode/skills/<name>/SKILL.md` add project settings, prompt
+agent's system prompt. `.icode-agent/settings.json`, `.icode-agent/prompts/*.md`
+and `.icode-agent/skills/<name>/SKILL.md` add project settings, prompt
 templates, and skills (loaded automatically).
 
 Configuration and sessions live under your user config directory
-(`~/.loongcode/`) — never inside
+(`~/.icode-agent/`) — never inside
 this package.
 
 ## Windows shell
@@ -96,8 +96,8 @@ To run them in CMD instead, add `shell` to `settings.json`:
 
 - `"powershell"` (default) — `powershell.exe`, started with `-NoLogo
   -NoProfile -NonInteractive`; `"cmd"` — `cmd.exe`, taken from `%ComSpec%`.
-- Global (`~/.loongcode/settings.json`) with a per-project override
-  (`.loongcode/settings.json`); the project value applies, so an explicit
+- Global (`~/.icode-agent/settings.json`) with a per-project override
+  (`.icode-agent/settings.json`); the project value applies, so an explicit
   choice is never replaced by the default.
 - Windows only: other platforms always run commands in `/bin/sh`.
 - CMD and PowerShell are different languages — their syntax, built-ins and
@@ -110,5 +110,5 @@ To run them in CMD instead, add `shell` to `settings.json`:
   `%ComSpec%`.
 
 See the repository README for the full product documentation.
-LoongCode is licensed under Apache-2.0; third-party material retains its own
+iCode Agent is licensed under Apache-2.0; third-party material retains its own
 licenses — see `THIRD_PARTY_NOTICES.md` in this package.

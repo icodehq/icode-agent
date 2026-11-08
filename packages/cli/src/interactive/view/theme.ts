@@ -1,8 +1,8 @@
-import type { MarkdownTheme } from "@loongcode/tui"
-import { getTerminalColorMode } from "@loongcode/tui"
+import type { MarkdownTheme } from "@icodehq/tui"
+import { getTerminalColorMode } from "@icodehq/tui"
 
 /**
- * LoongCode's semantic theme.
+ * iCode Agent's semantic theme.
  *
  * The UI never names a raw ANSI color; it names a *role* (muted, success,
  * diffRemove, …) and this module resolves that role for the current terminal:

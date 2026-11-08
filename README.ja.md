@@ -1,19 +1,19 @@
-# LoongCode
+# iCode Agent
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [한국어](README.ko.md) | 日本語
 
-LoongCode は、あなたのリポジトリ内で直接動作するように設計された、明確な方向性を持つコーディングエージェントです。失敗するテストの修正、モジュールのリファクタリング、バグの原因究明——ソフトウェアの作業を LoongCode に任せると、コードを読み、変更を加え、コマンドを実行し、その結果を自身で検証します。その様子はターミナル上でリアルタイムに確認でき、必要ならいつでも方向を指示できます。
+iCode Agent は、あなたのリポジトリ内で直接動作するように設計された、明確な方向性を持つコーディングエージェントです。失敗するテストの修正、モジュールのリファクタリング、バグの原因究明——ソフトウェアの作業を iCode Agent に任せると、コードを読み、変更を加え、コマンドを実行し、その結果を自身で検証します。その様子はターミナル上でリアルタイムに確認でき、必要ならいつでも方向を指示できます。
 
-LoongCode は意図的に絞り込まれています。汎用の AI アシスタントではなく、ソフトウェア開発の作業を実際に行うためのツールです。
+iCode Agent は意図的に絞り込まれています。汎用の AI アシスタントではなく、ソフトウェア開発の作業を実際に行うためのツールです。
 
 ## できること
 
-タスクを与えると、LoongCode は次のことができます。
+タスクを与えると、iCode Agent は次のことができます。
 
 - 見知らぬリポジトリの探索——ファイルやコードの一覧、検索、調査
 - 行番号付き・ページング対応のファイル閲覧、差分で確認できる安全な編集
 - 新規ファイルの作成とシェルコマンドの実行（テスト、ビルド、git など何でも）
-- 失敗するテストや壊れたビルドへの対応——失敗は情報であり、LoongCode は修復と再検証を繰り返します
+- 失敗するテストや壊れたビルドへの対応——失敗は情報であり、iCode Agent は修復と再検証を繰り返します
 - タスクが完了するか、あなたの助けが必要になるまで、自力で複数回のイテレーションを継続
 - 実行中のすべての作業を、ターミナル上にライブで表示
 
@@ -22,7 +22,7 @@ LoongCode は意図的に絞り込まれています。汎用の AI アシスタ
 ```text
 あなた：  このリポジトリで失敗しているテストを修正して。
 
-LoongCode:
+iCode Agent:
   ▸ read src/math.ts
   ✓ read src/math.ts
   ▸ bash bun test math.test.ts
@@ -37,41 +37,41 @@ LoongCode:
 
 主導権は常にあなたにあります。いつでも中断できますし、作業中にメッセージを入力してエージェントの方向を指示することもできます。
 
-## なぜ LoongCode か
+## なぜ iCode Agent か
 
-コーディングエージェントは、コードに一切手を加える前に、探索と実行——ファイルの読み込み、検索、再読み込み、再試行——に多くの労力を費やします。LoongCode は、このループがうまく機能するように作られています。
+コーディングエージェントは、コードに一切手を加える前に、探索と実行——ファイルの読み込み、検索、再読み込み、再試行——に多くの労力を費やします。iCode Agent は、このループがうまく機能するように作られています。
 
 - エージェントはリポジトリの「説明」ではなく、実際のリポジトリの状態に対してイテレーションします
 - コーディングループは可視化され、操作可能——エージェントの作業を見て、実行中でも方向を変えられます
 - 検証はワークフローの一部です。成功を主張するのではなく、テストを実行して変更を証明することが求められます
 - コンテキストは意図的に管理され、長いセッションは黙って溢れるのではなく要約されます
 
-LoongCode はソフトウェア開発に集中的に取り組むためのツールであり、汎用 AI アシスタントを目指してはいません。
+iCode Agent はソフトウェア開発に集中的に取り組むためのツールであり、汎用 AI アシスタントを目指してはいません。
 
 ## クイックスタート
 
-**前提条件:** [Node.js](https://nodejs.org) 22 以降（npm が同梱されています）。LoongCode は単一のプラットフォーム非依存パッケージなので、このインストール手順は Windows・macOS・Linux の x64 / arm64 でそのまま動作します。
+**前提条件:** [Node.js](https://nodejs.org) 22 以降（npm が同梱されています）。iCode Agent は単一のプラットフォーム非依存パッケージなので、このインストール手順は Windows・macOS・Linux の x64 / arm64 でそのまま動作します。
 
 クロスプラットフォーム互換性の改善は実装済みで、自動検証は Linux で実施済みです。ネイティブの Windows および macOS での検証は未実施です。
 
 ```sh
-npm install -g @loonglab/loongcode-cli
+npm install -g @icodehq/icode-agent
 cd ~/my-project
-loongcode
+icode-agent
 ```
 
 初回起動時はモデルが未設定です。`/model` で設定を行い、タスクを入力します。
 
 ### ソースから実行
 
-LoongCode 自体を開発する場合はチェックアウトから実行します:
+iCode Agent 自体を開発する場合はチェックアウトから実行します:
 
 ```sh
-git clone https://github.com/LoongLab/LoongCode.git
-cd LoongCode
+git clone https://github.com/icodehq/icode-agent.git
+cd icode-agent
 bun install
 
-# プロジェクト内で LoongCode を起動
+# プロジェクト内で iCode Agent を起動
 bun ./packages/cli/src/main.ts /path/to/your/project
 ```
 
@@ -81,7 +81,7 @@ bun ./packages/cli/src/main.ts /path/to/your/project
 
 ## モデルの設定
 
-LoongCode は 2 つのプロトコルを話します。公式 API と、互換性のある任意のエンドポイントの両方で動作します。
+iCode Agent は 2 つのプロトコルを話します。公式 API と、互換性のある任意のエンドポイントの両方で動作します。
 
 | プロトコル | 主な用途 |
 | --- | --- |
@@ -98,7 +98,7 @@ LoongCode は 2 つのプロトコルを話します。公式 API と、互換�
 `/model` は唯一の対話的なモデル画面です。モデルの追加では、プロトコル、エンドポイント、プロバイダのモデル、API キーを尋ねられ、コンテキスト長と最大出力トークンには適切な既定値が適用されます（任意の `Configure limits…` ステップで変更可能）。
 
 設定はローカルの設定ディレクトリに保存されます
-（`~/.loongcode/models.json`）。このファイルを直接編集することもできます。
+（`~/.icode-agent/models.json`）。このファイルを直接編集することもできます。
 
 ## エージェントとの作業
 
@@ -129,7 +129,7 @@ LoongCode は 2 つのプロトコルを話します。公式 API と、互換�
 
 ## プロジェクトの指示
 
-LoongCode は、リポジトリのルートにある指示ファイルを読み、作業開始前にプロジェクトの規約を把握します。
+iCode Agent は、リポジトリのルートにある指示ファイルを読み、作業開始前にプロジェクトの規約を把握します。
 
 - `AGENTS.override.md` — 存在する場合は最優先
 - `AGENTS.md`
@@ -137,7 +137,7 @@ LoongCode は、リポジトリのルートにある指示ファイルを読み�
 
 最初に見つかったファイルがエージェントのシステムプロンプトに読み込まれるため、最初のメッセージからプロジェクトのルールに従って動作します。
 
-さらに、プロジェクトローカルの**プロンプトテンプレート**（`.loongcode/prompts/*.md`）と**スキル**（`.loongcode/skills/<name>/SKILL.md`）を追加できます。これらは自動的に読み込まれます。グローバル設定は `~/.loongcode/settings.json` にあり、プロジェクトの `.loongcode/settings.json` で上書きできます。
+さらに、プロジェクトローカルの**プロンプトテンプレート**（`.icode-agent/prompts/*.md`）と**スキル**（`.icode-agent/skills/<name>/SKILL.md`）を追加できます。これらは自動的に読み込まれます。グローバル設定は `~/.icode-agent/settings.json` にあり、プロジェクトの `.icode-agent/settings.json` で上書きできます。
 
 ## Windows シェル
 
@@ -154,7 +154,7 @@ Windows では、コマンドは既定で **Windows PowerShell**（`powershell.e
 | `"powershell"`（既定） | `powershell.exe`（`-NoLogo -NoProfile -NonInteractive` 付きで起動） |
 | `"cmd"` | `cmd.exe`（`%ComSpec%` から取得） |
 
-- この設定はグローバル（`~/.loongcode/settings.json`）で、プロジェクト単位（`.loongcode/settings.json`）で上書きでき、プロジェクトの値が優先されます。明示した設定が既定値で置き換えられることはありません。
+- この設定はグローバル（`~/.icode-agent/settings.json`）で、プロジェクト単位（`.icode-agent/settings.json`）で上書きでき、プロジェクトの値が優先されます。明示した設定が既定値で置き換えられることはありません。
 - 影響するのは Windows のみです。他のプラットフォームは常に `/bin/sh` でコマンドを実行します。
 - CMD と PowerShell は別の言語です。構文・組み込みコマンド・スクリプトに互換性はなく、POSIX のコマンド（`ls`、`cat`、`grep` など）はどちらにも存在しません。エージェントには有効なシェルが伝えられるため、実際に実行されるシェルに合わせてコマンドを書きます。
 - シェルが自動で切り替わることはありません。選択したシェルが利用できない場合、コマンドはそのシェル名を示して失敗し、別のシェルでは実行されません（既定の PowerShell の場合も同様です）。`pwsh`（PowerShell 7）が自動で選ばれることもありません。
@@ -166,18 +166,18 @@ Windows では、コマンドは既定で **Windows PowerShell**（`powershell.e
 
 ```sh
 # タスクを 1 つ実行し、最終的な応答を表示
-loongcode -p "このプロジェクトが何をしているか説明して" /path/to/project
+icode-agent -p "このプロジェクトが何をしているか説明して" /path/to/project
 
 # すべてのランタイムイベントを JSON 行として出力（ツール連携用）
-loongcode --mode json -p "すべての TODO コメントを探して" /path/to/project
+icode-agent --mode json -p "すべての TODO コメントを探して" /path/to/project
 
 # このワークスペースの最新セッションを続行
-loongcode -c -p "見つけた問題を修正して" /path/to/project
+icode-agent -c -p "見つけた問題を修正して" /path/to/project
 ```
 
 ## 現在の状況
 
-**状況: 初期の実験的開発段階。** LoongCode は現在活発に開発中です。現在のバージョンは v0.1.3 です。含まれる内容は [CHANGELOG.md](CHANGELOG.md) を参照してください。
+**状況: 初期の実験的開発段階。** iCode Agent は現在活発に開発中です。現在のバージョンは v0.3.0 です。含まれる内容は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## ライセンス
 

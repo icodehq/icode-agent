@@ -1,19 +1,19 @@
-# LoongCode
+# iCode Agent
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [한국어](README.ko.md) | [日本語](README.ja.md)
 
-LoongCode는 여러분의 저장소 안에서 직접 작동하도록 설계된 코딩 에이전트입니다. 실패하는 테스트 수정, 모듈 리팩토링, 버그 원인 추적 같은 소프트웨어 작업을 LoongCode에 맡기면, 코드를 살펴보고 변경을 가하고, 명령을 실행하며, 결과를 스스로 검증합니다. 이 모든 과정은 터미널에서 실시간으로 확인할 수 있고, 언제든 방향을 지시할 수 있습니다.
+iCode Agent는 여러분의 저장소 안에서 직접 작동하도록 설계된 코딩 에이전트입니다. 실패하는 테스트 수정, 모듈 리팩토링, 버그 원인 추적 같은 소프트웨어 작업을 iCode Agent에 맡기면, 코드를 살펴보고 변경을 가하고, 명령을 실행하며, 결과를 스스로 검증합니다. 이 모든 과정은 터미널에서 실시간으로 확인할 수 있고, 언제든 방향을 지시할 수 있습니다.
 
-LoongCode는 의도적으로 집중도를 높였습니다. 범용 AI 어시스턴트가 아니라, 소프트웨어 엔지니어링 작업을 실제로 수행하기 위한 도구입니다.
+iCode Agent는 의도적으로 집중도를 높였습니다. 범용 AI 어시스턴트가 아니라, 소프트웨어 엔지니어링 작업을 실제로 수행하기 위한 도구입니다.
 
 ## 무엇을 할 수 있나요?
 
-LoongCode에 작업을 맡기면 다음이 가능합니다.
+iCode Agent에 작업을 맡기면 다음이 가능합니다.
 
 - 낯선 저장소 탐색 — 파일과 코드 목록 조회, 검색, 내용 확인
 - 줄 번호와 페이징이 있는 파일 읽기, diff로 검토 가능한 안전한 편집
 - 새 파일 생성과 셸 명령 실행 (테스트, 빌드, git 등 무엇이든)
-- 실패하는 테스트와 깨진 빌드에 대응 — 실패는 정보이며, LoongCode는 수복과 재검증을 반복합니다
+- 실패하는 테스트와 깨진 빌드에 대응 — 실패는 정보이며, iCode Agent는 수복과 재검증을 반복합니다
 - 작업이 끝나거나 도움이 필요해질 때까지 독자적으로 여러 번의 이터레이션을 진행
 - 진행 중인 모든 작업을 터미널에 실시간으로 표시
 
@@ -22,7 +22,7 @@ LoongCode에 작업을 맡기면 다음이 가능합니다.
 ```text
 당신:  이 저장소에서 실패하는 테스트를 수정해 줘.
 
-LoongCode:
+iCode Agent:
   ▸ read src/math.ts
   ✓ read src/math.ts
   ▸ bash bun test math.test.ts
@@ -37,41 +37,41 @@ LoongCode:
 
 주도권은 항상 사용자에게 있습니다. 언제든 중단할 수 있고, 작업 중에 메시지를 입력해 에이전트의 방향을 바꿀 수도 있습니다.
 
-## 왜 LoongCode인가?
+## 왜 iCode Agent인가?
 
-코딩 에이전트는 코드를 한 줄 바꾸기도 전에 탐색과 실행 — 파일 읽기, 검색, 재독립, 재시도 — 에 많은 노력을 소모합니다. LoongCode는 이 루프가 잘 작동하도록 만들어졌습니다.
+코딩 에이전트는 코드를 한 줄 바꾸기도 전에 탐색과 실행 — 파일 읽기, 검색, 재독립, 재시도 — 에 많은 노력을 소모합니다. iCode Agent는 이 루프가 잘 작동하도록 만들어졌습니다.
 
 - 에이전트는 저장소의 "설명"이 아니라 실제 저장소 상태를 대상으로 반복 작업을 수행합니다
 - 코딩 루프는 보이고 조종할 수 있습니다 — 에이전트가 하는 일을 보고, 작업 중에도 방향을 바꿀 수 있습니다
 - 검증은 워크플로의 일부입니다. 성공을 주장하는 대신 테스트를 실행해 변경을 증명해야 합니다
 - 컨텍스트는 의도적으로 관리되어, 긴 세션도 조용히 넘쳐흐르지 않고 요약됩니다
 
-LoongCode는 소프트웨어 개발에 집중합니다. 범용 AI 어시스턴트가 되려 하지 않습니다.
+iCode Agent는 소프트웨어 개발에 집중합니다. 범용 AI 어시스턴트가 되려 하지 않습니다.
 
 ## 빠른 시작
 
-**전제 조건:** [Node.js](https://nodejs.org) 22 이상(npm이 함께 제공됩니다). LoongCode는 플랫폼 독립적인 단일 패키지이므로, 이 설치 방법은 Windows, macOS, Linux의 x64/arm64에서 모두 동작합니다.
+**전제 조건:** [Node.js](https://nodejs.org) 22 이상(npm이 함께 제공됩니다). iCode Agent는 플랫폼 독립적인 단일 패키지이므로, 이 설치 방법은 Windows, macOS, Linux의 x64/arm64에서 모두 동작합니다.
 
 크로스 플랫폼 호환성 개선 사항은 구현되었고 자동화 검증은 Linux에서 수행되었습니다. 네이티브 Windows 및 macOS 검증은 아직 남아 있습니다.
 
 ```sh
-npm install -g @loonglab/loongcode-cli
+npm install -g @icodehq/icode-agent
 cd ~/my-project
-loongcode
+icode-agent
 ```
 
 첫 실행 시 모델이 설정되어 있지 않으면 `/model`로 설정한 후 작업을 입력합니다.
 
 ### 소스에서 실행
 
-LoongCode 자체를 개발하려면 체크아웃에서 실행합니다:
+iCode Agent 자체를 개발하려면 체크아웃에서 실행합니다:
 
 ```sh
-git clone https://github.com/LoongLab/LoongCode.git
-cd LoongCode
+git clone https://github.com/icodehq/icode-agent.git
+cd icode-agent
 bun install
 
-# 프로젝트에서 LoongCode 시작
+# 프로젝트에서 iCode Agent 시작
 bun ./packages/cli/src/main.ts /path/to/your/project
 ```
 
@@ -81,7 +81,7 @@ bun ./packages/cli/src/main.ts /path/to/your/project
 
 ## 모델 설정
 
-LoongCode는 두 가지 프로토콜을 지원합니다. 공식 API와 호환 가능한 모든 엔드포인트에서 동작합니다.
+iCode Agent는 두 가지 프로토콜을 지원합니다. 공식 API와 호환 가능한 모든 엔드포인트에서 동작합니다.
 
 | 프로토콜 | 주요 용도 |
 | --- | --- |
@@ -98,7 +98,7 @@ LoongCode는 두 가지 프로토콜을 지원합니다. 공식 API와 호환 �
 `/model`은 유일한 대화형 모델 화면입니다. 모델 추가 시 프로토콜, 엔드포인트, 프로바이더 모델, API 키를 묻고, 컨텍스트 창과 최대 출력 토큰에는 적절한 기본값이 적용됩니다(선택적 `Configure limits…` 단계에서 변경 가능).
 
 설정은 로컬 설정 디렉터리에 저장됩니다
-(`~/.loongcode/models.json`). 이 파일을 직접 편집할 수도 있습니다.
+(`~/.icode-agent/models.json`). 이 파일을 직접 편집할 수도 있습니다.
 
 ## 에이전트와 함께 작업하기
 
@@ -113,7 +113,7 @@ LoongCode는 두 가지 프로토콜을 지원합니다. 공식 API와 호환 �
 
 작업 내용은 자동으로 저장됩니다. 종료했다가 나중에 돌아와도 — `--continue`로 워크스페이스의 최근 세션을 이어가고, `--resume <id>`로 특정 세션을 복원할 수 있습니다. TUI 안의 `/session`은 이 워크스페이스의 세션을 관리하는 대화형 관리자를 열며, 열기·검색·이름 변경·삭제·분기·복제·관련 세션 탐색을 할 수 있습니다.
 
-작업 중에 LoongCode가 중단되면, 다음 시작 시 중단된 작업을 자동으로 조정합니다. 완료된 단계는 유지되고, 완료되지 않은 단계는 있는 그대로 보고되며, 멈춘 지점에서 계속할 수 있습니다.
+작업 중에 iCode Agent가 중단되면, 다음 시작 시 중단된 작업을 자동으로 조정합니다. 완료된 단계는 유지되고, 완료되지 않은 단계는 있는 그대로 보고되며, 멈춘 지점에서 계속할 수 있습니다.
 
 ### 슬래시 명령
 
@@ -129,7 +129,7 @@ LoongCode는 두 가지 프로토콜을 지원합니다. 공식 API와 호환 �
 
 ## 프로젝트 지침
 
-LoongCode는 저장소 루트의 지시 파일을 읽어 작업 시작 전에 프로젝트의 규칙을 파악합니다.
+iCode Agent는 저장소 루트의 지시 파일을 읽어 작업 시작 전에 프로젝트의 규칙을 파악합니다.
 
 - `AGENTS.override.md` — 있으면 최우선 적용
 - `AGENTS.md`
@@ -137,7 +137,7 @@ LoongCode는 저장소 루트의 지시 파일을 읽어 작업 시작 전에 �
 
 가장 먼저 발견된 파일이 에이전트의 시스템 프롬프트에 로드되므로, 첫 메시지부터 프로젝트의 규칙을 따릅니다.
 
-프로젝트 로컬 **프롬프트 템플릿**(`.loongcode/prompts/*.md`)과 **스킬**(`.loongcode/skills/<name>/SKILL.md`)을 추가할 수도 있습니다. 이들은 자동으로 로드됩니다. 전역 설정은 `~/.loongcode/settings.json`에 있으며 프로젝트의 `.loongcode/settings.json`으로 재정의할 수 있습니다.
+프로젝트 로컬 **프롬프트 템플릿**(`.icode-agent/prompts/*.md`)과 **스킬**(`.icode-agent/skills/<name>/SKILL.md`)을 추가할 수도 있습니다. 이들은 자동으로 로드됩니다. 전역 설정은 `~/.icode-agent/settings.json`에 있으며 프로젝트의 `.icode-agent/settings.json`으로 재정의할 수 있습니다.
 
 ## Windows 셸
 
@@ -154,7 +154,7 @@ Windows에서 명령은 기본적으로 **Windows PowerShell**(`powershell.exe`)
 | `"powershell"`(기본값) | `powershell.exe`(`-NoLogo -NoProfile -NonInteractive`로 시작) |
 | `"cmd"` | `cmd.exe`(`%ComSpec%`에서 가져옴) |
 
-- 이 설정은 전역(`~/.loongcode/settings.json`)이며 프로젝트별(`.loongcode/settings.json`)로 재정의할 수 있고, 프로젝트의 값이 적용됩니다. 명시한 설정이 기본값으로 대체되는 일은 없습니다.
+- 이 설정은 전역(`~/.icode-agent/settings.json`)이며 프로젝트별(`.icode-agent/settings.json`)로 재정의할 수 있고, 프로젝트의 값이 적용됩니다. 명시한 설정이 기본값으로 대체되는 일은 없습니다.
 - Windows에만 적용됩니다. 다른 플랫폼은 항상 `/bin/sh`로 명령을 실행합니다.
 - CMD와 PowerShell은 서로 다른 언어입니다. 구문과 내장 명령, 스크립트는 호환되지 않으며 POSIX 명령(`ls`, `cat`, `grep` 등)은 어느 쪽에도 없습니다. 에이전트는 어떤 셸이 활성화되어 있는지 전달받아 실제로 실행되는 셸에 맞춰 명령을 작성합니다.
 - 셸이 자동으로 바뀌는 일은 없습니다. 선택한 셸을 사용할 수 없으면 명령은 해당 셸 이름을 알리며 실패하고, 다른 셸로 대신 실행되지 않습니다(기본값인 PowerShell도 마찬가지입니다). `pwsh`(PowerShell 7)가 자동으로 선택되지도 않습니다.
@@ -166,18 +166,18 @@ Windows에서 명령은 기본적으로 **Windows PowerShell**(`powershell.exe`)
 
 ```sh
 # 작업 하나를 실행하고 최종 응답 출력
-loongcode -p "이 프로젝트가 하는 일을 설명해 줘" /path/to/project
+icode-agent -p "이 프로젝트가 하는 일을 설명해 줘" /path/to/project
 
 # 모든 런타임 이벤트를 JSON 라인으로 출력 (도구 연동용)
-loongcode --mode json -p "모든 TODO 주석을 찾아 줘" /path/to/project
+icode-agent --mode json -p "모든 TODO 주석을 찾아 줘" /path/to/project
 
 # 이 워크스페이스의 최근 세션 계속하기
-loongcode -c -p "발견한 문제를 수정해 줘" /path/to/project
+icode-agent -c -p "발견한 문제를 수정해 줘" /path/to/project
 ```
 
 ## 현재 상태
 
-**상태: 초기 실험적 개발 단계.** LoongCode는 현재 활발히 개발 중입니다. 현재 버전은 v0.1.3입니다. 포함된 내용은 [CHANGELOG.md](CHANGELOG.md)에서 확인하세요.
+**상태: 초기 실험적 개발 단계.** iCode Agent는 현재 활발히 개발 중입니다. 현재 버전은 v0.3.0입니다. 포함된 내용은 [CHANGELOG.md](CHANGELOG.md)에서 확인하세요.
 
 ## 라이선스
 

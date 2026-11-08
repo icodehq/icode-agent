@@ -2,9 +2,9 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import type { Terminal } from "@loongcode/tui"
-import { LoongCode } from "@loongcode/agent"
-import { LoongCodeTui, modelReadiness } from "./app"
+import type { Terminal } from "@icodehq/tui"
+import { ICodeAgent } from "@icodehq/agent"
+import { ICodeAgentTui, modelReadiness } from "./app"
 import { parseRawScreen, parseScreen } from "./view/testing"
 import { setThemeColorDepth, setThemeMonochrome, setThemeScheme, theme } from "./view/theme"
 
@@ -28,20 +28,20 @@ let sessionsDir: string
 let priorConfigDir: string | undefined
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), "loongcode-nomatch-"))
+  root = mkdtempSync(join(tmpdir(), "icode-agent-nomatch-"))
   ws = join(root, "ws")
   configDir = join(root, "config")
   sessionsDir = join(root, "sessions")
   mkdirSync(ws)
   mkdirSync(configDir)
   mkdirSync(sessionsDir)
-  priorConfigDir = process.env.LOONGCODE_CONFIG_DIR
-  process.env.LOONGCODE_CONFIG_DIR = configDir
+  priorConfigDir = process.env.ICODE_AGENT_CONFIG_DIR
+  process.env.ICODE_AGENT_CONFIG_DIR = configDir
 })
 
 afterEach(() => {
-  if (priorConfigDir === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-  else process.env.LOONGCODE_CONFIG_DIR = priorConfigDir
+  if (priorConfigDir === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+  else process.env.ICODE_AGENT_CONFIG_DIR = priorConfigDir
   rmSync(root, { recursive: true, force: true })
   // Restore the deterministic default so other suites are unaffected.
   setThemeScheme("dark")
@@ -106,15 +106,15 @@ const dummyConfig = (): string =>
   })
 
 interface Harness {
-  readonly app: LoongCodeTui
+  readonly app: ICodeAgentTui
   readonly tty: Tty
 }
 
 async function mount(): Promise<Harness> {
-  const agent = new LoongCode({ sessionsDir })
+  const agent = new ICodeAgent({ sessionsDir })
   const session = agent.createSession(ws)
   const tty = createTerminal(100, ROWS)
-  const app = new LoongCodeTui({
+  const app = new ICodeAgentTui({
     agent,
     session,
     terminal: tty.terminal,

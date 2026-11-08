@@ -5,8 +5,8 @@ import { configDir } from "./dir"
 /**
  * Project/user resources: prompt templates and skills.
  *
- * - Global resources live under `~/.loongcode/` and always load.
- * - Project resources live under `<cwd>/.loongcode/` and always load.
+ * - Global resources live under `~/.icode-agent/` and always load.
+ * - Project resources live under `<cwd>/.icode-agent/` and always load.
  */
 
 export interface PromptTemplate {
@@ -34,7 +34,7 @@ export function userResourceDir(): string {
 }
 
 export function projectResourceDir(cwd: string): string {
-  return join(cwd, ".loongcode")
+  return join(cwd, ".icode-agent")
 }
 
 /** A prompt template's identity without its content. */
@@ -94,7 +94,7 @@ function readSkillDirs(root: string): Skill[] {
   return out
 }
 
-/** Loads global and project resources. Project-local resources (.loongcode/
+/** Loads global and project resources. Project-local resources (.icode-agent/
  *  prompts and skills) load unconditionally. */
 export function loadResources(cwd: string): LoadedResources {
   const result: LoadedResources = { prompts: [], skills: [] }

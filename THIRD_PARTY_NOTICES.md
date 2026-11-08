@@ -1,6 +1,6 @@
 # Third-party notices
 
-LoongCode is licensed under the [Apache License 2.0](LICENSE). It bundles and
+iCode Agent is licensed under the [Apache License 2.0](LICENSE). It bundles and
 derives from third-party material that retains its own copyright and license
 notices. Those notices are reproduced below and must be preserved in any
 redistribution.
@@ -20,7 +20,7 @@ file retains its upstream copyright header where the license requires it.
 
 ## Bundled dependencies
 
-The published `@loonglab/loongcode-cli` package bundles the following runtime
+The published `@icodehq/icode-agent` package bundles the following runtime
 dependencies:
 
 | Package | License | Copyright |

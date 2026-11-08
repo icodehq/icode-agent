@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { type Component } from "@loongcode/tui"
+import { type Component } from "@icodehq/tui"
 import { displayWidth } from "../../projection"
 import { TuiHarness } from "./testing"
 import { HelloHeader, KEYBOARD_HINTS, READY_LINE, WORDMARK, helloHeader, renderHelloHeader, transcriptHeight } from "./banner"

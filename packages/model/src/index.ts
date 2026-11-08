@@ -1,6 +1,6 @@
 /**
- * `@loongcode/model` — model configuration, lifecycle, active-model
- * selection, and normalized model invocation for LoongCode.
+ * `@icodehq/model` — model configuration, lifecycle, active-model
+ * selection, and normalized model invocation for ICodeAgent.
  *
  * Public surface: {@link ModelManager} (owns configurations and the active
  * model) and {@link Model} (a concrete callable model), plus the canonical

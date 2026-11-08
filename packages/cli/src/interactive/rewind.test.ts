@@ -1,7 +1,7 @@
 /**
  * `/rewind` through the real TUI.
  *
- * These tests mount the actual `LoongCodeTui` against a mock terminal and drive
+ * These tests mount the actual `ICodeAgentTui` against a mock terminal and drive
  * the real command, picker, and action-menu code paths — the selectors are
  * exercised, not reimplemented. File and history effects are read back from
  * the filesystem and the session, so a passing test means the operation
@@ -11,10 +11,10 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import type { Model, ModelEvent, ModelRequest, ModelResponse } from "@loongcode/model"
-import { LoongCode, type Session } from "@loongcode/agent"
-import type { Terminal } from "@loongcode/tui"
-import { LoongCodeTui } from "./app"
+import type { Model, ModelEvent, ModelRequest, ModelResponse } from "@icodehq/model"
+import { ICodeAgent, type Session } from "@icodehq/agent"
+import type { Terminal } from "@icodehq/tui"
+import { ICodeAgentTui } from "./app"
 import { parseScreen } from "./view/testing"
 
 /** A model that answers with one `write` call, then a plain reply. */
@@ -104,20 +104,20 @@ beforeEach(() => {
   mkdirSync(ws)
   mkdirSync(sessionsDir)
   mkdirSync(join(root, "config"))
-  priorConfigDir = process.env.LOONGCODE_CONFIG_DIR
-  process.env.LOONGCODE_CONFIG_DIR = join(root, "config")
+  priorConfigDir = process.env.ICODE_AGENT_CONFIG_DIR
+  process.env.ICODE_AGENT_CONFIG_DIR = join(root, "config")
 })
 
 afterEach(() => {
-  if (priorConfigDir === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-  else process.env.LOONGCODE_CONFIG_DIR = priorConfigDir
+  if (priorConfigDir === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+  else process.env.ICODE_AGENT_CONFIG_DIR = priorConfigDir
   rmSync(root, { recursive: true, force: true })
 })
 
 interface Harness {
   readonly model: WritingModel
-  readonly agent: LoongCode
-  readonly app: LoongCodeTui
+  readonly agent: ICodeAgent
+  readonly app: ICodeAgentTui
   readonly tty: Tty
   readonly sessionId: string
 }
@@ -138,7 +138,7 @@ interface Turn {
 /** The real TUI over a session that already has `turns` recorded runs. */
 async function makeApp(turns: readonly Turn[], columns = 100): Promise<Harness> {
   const model = new WritingModel()
-  const agent = new LoongCode({ sessionsDir, model })
+  const agent = new ICodeAgent({ sessionsDir, model })
   const session = agent.createSession(ws)
   for (const turn of turns) {
     model.writes = turn.write === undefined ? [] : [turn.write]
@@ -149,9 +149,9 @@ async function makeApp(turns: readonly Turn[], columns = 100): Promise<Harness> 
 }
 
 /** Mounts a fresh app over a session, as a restart would build. */
-async function mount(agent: LoongCode, session: Session, model: WritingModel, columns = 100): Promise<Harness> {
+async function mount(agent: ICodeAgent, session: Session, model: WritingModel, columns = 100): Promise<Harness> {
   const tty = createTerminal(columns)
-  const app = new LoongCodeTui({ agent, session, terminal: tty.terminal, label: ws })
+  const app = new ICodeAgentTui({ agent, session, terminal: tty.terminal, label: ws })
   app.start()
   return { model, agent, app, tty, sessionId: session.id }
 }
@@ -159,7 +159,7 @@ async function mount(agent: LoongCode, session: Session, model: WritingModel, co
 /** Remounts the same on-disk session in a new process-equivalent app. */
 async function remount(h: Harness): Promise<Harness> {
   h.app.stop()
-  const agent = new LoongCode({ sessionsDir, model: h.model })
+  const agent = new ICodeAgent({ sessionsDir, model: h.model })
   const session = await agent.loadSession(h.sessionId)
   return mount(agent, session, h.model)
 }
@@ -398,7 +398,7 @@ describe("rewind — state consistency", () => {
     const h = await makeApp([{ prompt: "gone", write: { filePath: "g.txt", content: "G\n" } }])
     await rewindTo(h, 1, 2) // conversation only
 
-    const reloaded = await new LoongCode({ sessionsDir }).loadSession(h.sessionId)
+    const reloaded = await new ICodeAgent({ sessionsDir }).loadSession(h.sessionId)
     expect(reloaded.messages).toHaveLength(0)
   })
 

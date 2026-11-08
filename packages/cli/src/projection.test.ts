@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import type { ModelLimits } from "@loongcode/model"
-import { contextBudget } from "@loongcode/agent"
-import type { ModelIdentity, RunEvent, RunFinishReason, RunSummary } from "@loongcode/agent"
+import type { ModelLimits } from "@icodehq/model"
+import { contextBudget } from "@icodehq/agent"
+import type { ModelIdentity, RunEvent, RunFinishReason, RunSummary } from "@icodehq/agent"
 import {
   NO_RUN_DISPLAY,
   compactionNoticeText,
@@ -146,7 +146,7 @@ describe("the last request and the whole run are never the same field", () => {
 })
 
 // ---------------------------------------------------------------------------
-// 2 — context is measured against LoongCode's usable input budget
+// 2 — context is measured against iCode Agent's usable input budget
 // ---------------------------------------------------------------------------
 
 describe("context is measured against the usable input budget", () => {

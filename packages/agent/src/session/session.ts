@@ -1,4 +1,4 @@
-import type { ModelAssistantPart, ModelMessage, ModelToolResult, ModelUsage } from "@loongcode/model"
+import type { ModelAssistantPart, ModelMessage, ModelToolResult, ModelUsage } from "@icodehq/model"
 import type {
   CompactionSkip,
   ModelIdentity,

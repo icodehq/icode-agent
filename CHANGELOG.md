@@ -1,8 +1,21 @@
 # Changelog
 
-All notable changes to LoongCode will be documented in this file.
+All notable changes to iCode Agent will be documented in this file.
 
 ## [Unreleased]
+
+## [0.3.0] - 2026-11-08
+
+The project is now **iCode Agent**.
+
+### Changed
+
+- Repository moved to `icodehq/icode-agent`.
+- npm package is `@icodehq/icode-agent`.
+- CLI command is `icode-agent`.
+- User configuration lives in `~/.icode-agent`; project configuration lives in
+  `.icode-agent/`.
+- The config-directory override is `ICODE_AGENT_CONFIG_DIR`.
 
 ## [0.2.2] - 2026-10-16
 
@@ -134,12 +147,12 @@ context-management positioning.
   inventories the derived source and bundled dependencies with their license
   texts, and `NOTICE` scopes which portions of the project are original
   (Apache-2.0) versus derived (MIT). Both are now included in the
-  `@loonglab/loongcode-cli` tarball alongside `LICENSE` and `CHANGELOG.md`, so a
+  `@icodehq/icode-agent` tarball alongside `LICENSE` and `CHANGELOG.md`, so a
   redistributed copy carries the notices it needs.
 
 ### Changed
 
-- `@loongcode/tui` declares its `license` field (MIT); it was previously absent
+- `@icodehq/tui` declares its `license` field (MIT); it was previously absent
   even though the package is derived from MIT-licensed source.
 - The package README leads with the context-management positioning and gains a
   "Context that lasts" section describing the three context layers.
@@ -171,7 +184,7 @@ records the rename and the command consolidation the code has carried since
   next task; removing any other model leaves the active one alone. All three
   actions are refused while a task or a compaction is running, so a model change
   can never take the workspace view out from under a run.
-- An empty transcript now opens with a large `LOONGCODE` block wordmark and the
+- An empty transcript now opens with a large `iCode Agent` block wordmark and the
   descriptor "an opinionated coding agent", followed by the existing keyboard
   hints. The hero is a true empty state: it is centered as a group in the
   transcript viewport — horizontally, and vertically within the available
@@ -186,27 +199,27 @@ records the rename and the command consolidation the code has carried since
 
 ### Changed
 
-- **The product is now LoongCode.** The rename is complete across the CLI,
+- **The product is now iCode Agent.** The rename is complete across the CLI,
   its runtime, its configuration and its documentation. Command, package,
-  binary and configuration names are all `loongcode`: the CLI is published as
-  `@loonglab/loongcode-cli`, the executable is `loongcode`, and the user-scope
-  configuration directory is `~/.loongcode/` (project-scope configuration is
-  `.loongcode/`). The `MINICODE_CONFIG_DIR` override is replaced by
-  `LOONGCODE_CONFIG_DIR`. The wordmark, help text, and agent identity all read
-  LoongCode. There is no compatibility shim for the previous names: the old
+  binary and configuration names are all `icode-agent`: the CLI is published as
+  `@icodehq/icode-agent`, the executable is `icode-agent`, and the user-scope
+  configuration directory is `~/.icode-agent/` (project-scope configuration is
+  `.icode-agent/`). The `MINICODE_CONFIG_DIR` override is replaced by
+  `ICODE_AGENT_CONFIG_DIR`. The wordmark, help text, and agent identity all read
+  iCode Agent. There is no compatibility shim for the previous names: the old
   configuration directory and environment variable are no longer read, so an
   existing installation starts from its defaults and must be pointed at its
   configuration again.
 - Prompt templates are now discovered live. The editor's `/` autocomplete and
-  template invocation read `.loongcode/prompts/*.md` (and `~/.loongcode/prompts/`)
-  from disk as needed, so a template added, edited, or removed while LoongCode
+  template invocation read `.icode-agent/prompts/*.md` (and `~/.icode-agent/prompts/`)
+  from disk as needed, so a template added, edited, or removed while iCode Agent
   is running takes effect immediately with no manual refresh. Prompt contents
   were already resolved from disk at invocation time.
-- Project-local prompts (`.loongcode/prompts/*.md`) and skills
-  (`.loongcode/skills/<name>/SKILL.md`) now load unconditionally. The
+- Project-local prompts (`.icode-agent/prompts/*.md`) and skills
+  (`.icode-agent/skills/<name>/SKILL.md`) now load unconditionally. The
   per-project trust decision was removed, so no consent step is required
   before these resources reach the model. Global resources under
-  `~/.loongcode/` are unchanged.
+  `~/.icode-agent/` are unchanged.
 - `/model` is now a single command with no subcommands or argument forms. It
   opens one picker that selects an existing configured model or offers
   `Add model…`, which launches the guided configuration wizard. Model
@@ -233,7 +246,7 @@ records the rename and the command consolidation the code has carried since
   left to refresh manually.
 - Slash command `/trust` and the project-trust mechanism behind it
   (`isProjectTrusted`, `trustProject`, and the `projectTrusted` settings
-  key). Existing `.loongcode/settings.json` files that still contain
+  key). Existing `.icode-agent/settings.json` files that still contain
   `projectTrusted` remain valid; the key is simply ignored.
 - Slash commands `/import` and `/export`. Session portability is not a
   current product need; sessions are still persisted and recovered through

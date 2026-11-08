@@ -3,7 +3,7 @@ import { mkdtempSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { COMMANDS } from "../commands"
-import { LoongCodeAutocomplete } from "./autocomplete"
+import { ICodeAgentAutocomplete } from "./autocomplete"
 
 /**
  * Slash-command filtering (E1).
@@ -16,8 +16,8 @@ import { LoongCodeAutocomplete } from "./autocomplete"
 
 /** The production command source, exactly as the application wires it. */
 const production = () => COMMANDS.map(command => ({ name: command.name, description: command.description }))
-const provider = (workspace = process.cwd()): LoongCodeAutocomplete =>
-  new LoongCodeAutocomplete(production, () => workspace)
+const provider = (workspace = process.cwd()): ICodeAgentAutocomplete =>
+  new ICodeAgentAutocomplete(production, () => workspace)
 
 /** A fixture surface whose declaration order is deliberately not rank order. */
 const FIXTURE = [
@@ -26,8 +26,8 @@ const FIXTURE = [
   { name: "it", description: "exact" }, // equals "it"
   { name: "unit", description: "substring, declared last" }, // contains "it"
 ]
-const fixtureProvider = (): LoongCodeAutocomplete =>
-  new LoongCodeAutocomplete(() => FIXTURE, () => process.cwd())
+const fixtureProvider = (): ICodeAgentAutocomplete =>
+  new ICodeAgentAutocomplete(() => FIXTURE, () => process.cwd())
 
 const labels = (suggestions: { items: Array<{ label: string }> } | null): string[] =>
   suggestions === null ? [] : suggestions.items.map(item => item.label)
@@ -109,7 +109,7 @@ describe("slash-command filtering", () => {
 
 describe("@ file completion is unchanged", () => {
   test("files still complete, and a miss stays silent (no command no-match)", async () => {
-    const workspace = mkdtempSync(join(tmpdir(), "loongcode-ac-"))
+    const workspace = mkdtempSync(join(tmpdir(), "icode-agent-ac-"))
     writeFileSync(join(workspace, "alpha.txt"), "x")
 
     const hit = await provider(workspace).getSuggestions(["@al"], 0, 3)

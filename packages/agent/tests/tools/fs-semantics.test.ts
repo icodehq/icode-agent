@@ -13,7 +13,7 @@ import { CODING_TOOLS } from "../../src/tools"
 const ctx = (cwd: string) => ({ cwd })
 
 function tempWorkspace(): { dir: string; cleanup: () => void } {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-fs-semantics-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-fs-semantics-"))
   return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) }
 }
 

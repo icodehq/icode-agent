@@ -23,7 +23,7 @@ const GRACE_MS = 2000
 const SETTLE_LIMIT_MS = GRACE_MS + 3000
 
 function scratch(): { dir: string; cleanup: () => void } {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-cancel-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-cancel-"))
   return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) }
 }
 

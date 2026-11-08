@@ -4,7 +4,7 @@
  */
 import { describe, expect, test } from "bun:test"
 import { basename, join } from "node:path"
-import { ModelError } from "@loongcode/model"
+import { ModelError } from "@icodehq/model"
 import type { RunEvent } from "../../src/loop/events"
 import { FakeModel, textResponse, toolCallResponse } from "../support/testing"
 import { agentFor } from "../support/loop"

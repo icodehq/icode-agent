@@ -16,7 +16,7 @@ const printBothStreamsAndExit7 = () => process.platform === "win32"
   : "echo out; echo err 1>&2; exit 7"
 
 function tempWorkspace(): { dir: string; cleanup: () => void } {
-  const dir = mkdtempSync(join(tmpdir(), "loongcode-tools-test-"))
+  const dir = mkdtempSync(join(tmpdir(), "icode-agent-tools-test-"))
   return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) }
 }
 

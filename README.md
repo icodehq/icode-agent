@@ -2,44 +2,44 @@
 
 **English** · [简体中文](README.zh-CN.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 
-# LoongCode
+# iCode Agent
 
 ### The coding agent that won't burn your context window.
 
 **Fix a failing test. Refactor a module. Track down a bug — and keep the agent sharp from the first message to the last.**
 
-[![npm version](https://img.shields.io/npm/v/@loonglab/loongcode-cli?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@loonglab/loongcode-cli)
+[![npm version](https://img.shields.io/npm/v/@icodehq/icode-agent?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@icodehq/icode-agent)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A522-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![context](https://img.shields.io/badge/context-bounded-5c4ee5?style=flat-square)](#context-that-lasts)
 
-`npm install -g @loonglab/loongcode-cli`
+`npm install -g @icodehq/icode-agent`
 
-[Quick start](#quick-start) · [See it work](#see-it-work) · [Context that lasts](#context-that-lasts) · [What it can do](#what-it-can-do) · [Why LoongCode](#why-loongcode) · [FAQ](#faq) · [Documentation](#documentation)
+[Quick start](#quick-start) · [See it work](#see-it-work) · [Context that lasts](#context-that-lasts) · [What it can do](#what-it-can-do) · [Why iCode Agent](#why-icode-agent) · [FAQ](#faq) · [Documentation](#documentation)
 
 </div>
 
 ---
 
-LoongCode is an opinionated coding agent that works directly in your repository. Give it a software task and it explores the code, makes changes, runs commands, and verifies its own work — while you watch and steer it in your terminal.
+iCode Agent is an opinionated coding agent that works directly in your repository. Give it a software task and it explores the code, makes changes, runs commands, and verifies its own work — while you watch and steer it in your terminal.
 
-Running a long task is where coding agents fall apart. The context window fills with old file reads and command output, the agent starts forgetting what it already did, and every request costs more. **LoongCode treats context as a budget to defend, not a bucket to fill** — so long sessions stay sharp, coherent, and affordable.
+Running a long task is where coding agents fall apart. The context window fills with old file reads and command output, the agent starts forgetting what it already did, and every request costs more. **iCode Agent treats context as a budget to defend, not a bucket to fill** — so long sessions stay sharp, coherent, and affordable.
 
 It is deliberately focused: a tool for getting software engineering work done, not a general-purpose AI assistant.
 
 ## Quick start
 
 **Prerequisite:** [Node.js](https://nodejs.org) 22 or newer (npm ships with it).
-LoongCode is a single platform-independent package, so this one install works on
+iCode Agent is a single platform-independent package, so this one install works on
 Windows, macOS, and Linux, on both x64 and arm64.
 
 ```sh
-npm install -g @loonglab/loongcode-cli
+npm install -g @icodehq/icode-agent
 cd ~/my-project
-loongcode
+icode-agent
 ```
 
-On first launch LoongCode sets up a model before the workspace opens. It tells
+On first launch iCode Agent sets up a model before the workspace opens. It tells
 you no model is active and opens the setup flow, where you choose one you have
 already configured or add a new one (protocol, endpoint, model name, API key).
 The workspace becomes available once a model is active; cancelling setup exits.
@@ -51,14 +51,14 @@ Then type a task, press Enter, and watch it work.
 
 ### Running from source
 
-To develop LoongCode itself, run it from a checkout:
+To develop iCode Agent itself, run it from a checkout:
 
 ```sh
-git clone https://github.com/LoongLab/LoongCode.git
-cd LoongCode
+git clone https://github.com/icodehq/icode-agent.git
+cd icode-agent
 bun install
 
-# start LoongCode in your project
+# start iCode Agent in your project
 bun ./packages/cli/src/main.ts /path/to/your/project
 ```
 
@@ -75,7 +75,7 @@ with `/model` or Ctrl+P.
 ```text
 You:  Fix the failing tests in this repository.
 
-LoongCode:
+iCode Agent:
   ▸ read src/math.ts
   ✓ read src/math.ts
   ▸ bash bun test math.test.ts
@@ -89,14 +89,14 @@ LoongCode:
 ```
 
 You stay in control: interrupt at any time, or type a message mid-task to steer
-the agent in a different direction. A failure is information — LoongCode keeps
+the agent in a different direction. A failure is information — iCode Agent keeps
 repairing and re-verifying until the task is done or it needs you.
 
 ## Context that lasts
 
 Most agents handle a full context window in one of two bad ways: they truncate
 old output and lose the thread, or they let history grow until the request no
-longer fits and the run stalls. **LoongCode does neither.** Context is managed
+longer fits and the run stalls. **iCode Agent does neither.** Context is managed
 at every boundary — capped as it is produced, reduced when a request would
 overflow, summarized when history truly does — each layer doing the cheapest
 thing that works:
@@ -126,10 +126,10 @@ counts stay honest, because context is a budget here — not an accident.
 
 ## What it can do
 
-Give LoongCode a task and it runs the loop — explore, change, run, verify —
+Give iCode Agent a task and it runs the loop — explore, change, run, verify —
 against the real repository state:
 
-| Give it a task | What LoongCode does | Needs |
+| Give it a task | What iCode Agent does | Needs |
 | --- | --- | --- |
 | Fix a failing test | reads code, runs your tests, edits, re-runs until green | Node.js 22+ |
 | Refactor a module | searches and reads with line numbers, makes diff-reviewed edits | Node.js 22+ |
@@ -140,12 +140,12 @@ against the real repository state:
 Its seven-tool coding set covers the whole loop — `read`, `write`, `edit`,
 `grep`, `find`, `ls`, and `bash` — and each tool call is shown live as it runs.
 
-## Why LoongCode?
+## Why iCode Agent?
 
 Coding agents spend a large share of their effort on exploration and execution —
 reading files, searching, re-reading, retrying — before ever changing a line of
 code. Every one of those steps lands in the context window and costs tokens on
-every request that follows. LoongCode is built around making that loop work well:
+every request that follows. iCode Agent is built around making that loop work well:
 
 - **context is defended, not filled** — output is capped, older results are reduced, and history is summarized, so long sessions don't spiral in cost or fall off a cliff;
 - **nothing is lost when it's reduced** — withheld results keep a route back, and failure evidence is never hidden;
@@ -153,12 +153,12 @@ every request that follows. LoongCode is built around making that loop work well
 - the coding loop is visible and steerable — you see what it does and can redirect it while it works;
 - verification is part of the workflow: the agent is expected to run your tests and prove its changes, not just claim success.
 
-LoongCode is intentionally focused on software development. It is not trying to
+iCode Agent is intentionally focused on software development. It is not trying to
 be a general-purpose AI assistant.
 
 ## Configure a model
 
-LoongCode speaks two protocols, so it works with the official APIs and with any compatible endpoint:
+iCode Agent speaks two protocols, so it works with the official APIs and with any compatible endpoint:
 
 | Protocol | Typical use |
 | --- | --- |
@@ -181,7 +181,7 @@ key; it offers to keep that key or replace it. Model changes are refused while a
 task or a compaction is running, and removing the active model reopens setup.
 
 Configuration is persisted locally under your config directory
-(`~/.loongcode/models.json`) — you can also edit that file directly.
+(`~/.icode-agent/models.json`) — you can also edit that file directly.
 
 ## Working with the agent
 
@@ -196,7 +196,7 @@ While a task runs you see everything: the current iteration, each tool call with
 
 Your work is saved automatically. Exit and come back later — `--continue` picks up the most recent session in the workspace, and `--resume <id>` restores a specific one. Inside the TUI, `/session` opens an interactive manager for this workspace's sessions, where you can open, search, rename, delete, fork, clone, and browse related sessions.
 
-If LoongCode is interrupted mid-task, the next start reconciles the interrupted work: finished steps are kept, unfinished ones are reported honestly, and you can continue where things stopped.
+If iCode Agent is interrupted mid-task, the next start reconciles the interrupted work: finished steps are kept, unfinished ones are reported honestly, and you can continue where things stopped.
 
 ### Slash commands
 
@@ -212,7 +212,7 @@ If LoongCode is interrupted mid-task, the next start reconciles the interrupted 
 
 ## Project instructions
 
-LoongCode reads instruction files from your repository root to understand your project's conventions before it starts:
+iCode Agent reads instruction files from your repository root to understand your project's conventions before it starts:
 
 - `AGENTS.override.md` — takes precedence when present
 - `AGENTS.md`
@@ -220,7 +220,7 @@ LoongCode reads instruction files from your repository root to understand your p
 
 The first file found is loaded into the agent's system prompt, so the agent follows your project's rules from the first message.
 
-You can also add project-local **prompt templates** (`.loongcode/prompts/*.md`) and **skills** (`.loongcode/skills/<name>/SKILL.md`). These load automatically. Global settings live in `~/.loongcode/settings.json` and can be overridden per project in `.loongcode/settings.json`.
+You can also add project-local **prompt templates** (`.icode-agent/prompts/*.md`) and **skills** (`.icode-agent/skills/<name>/SKILL.md`). These load automatically. Global settings live in `~/.icode-agent/settings.json` and can be overridden per project in `.icode-agent/settings.json`.
 
 ## Windows shell
 
@@ -237,7 +237,7 @@ On Windows, commands run in **Windows PowerShell** (`powershell.exe`) by default
 | `"powershell"` (default) | `powershell.exe`, started with `-NoLogo -NoProfile -NonInteractive` |
 | `"cmd"` | `cmd.exe`, taken from `%ComSpec%` |
 
-- The setting is global (`~/.loongcode/settings.json`) and can be overridden per project (`.loongcode/settings.json`); the project value applies, so an explicit choice is never replaced by the default.
+- The setting is global (`~/.icode-agent/settings.json`) and can be overridden per project (`.icode-agent/settings.json`); the project value applies, so an explicit choice is never replaced by the default.
 - It affects Windows only. Other platforms always run commands in `/bin/sh`.
 - CMD and PowerShell are different languages: their syntax, built-ins, and scripts are not interchangeable, and POSIX commands (`ls`, `cat`, `grep`, …) exist in neither. The agent is told which shell is active, so it writes commands for the one that runs.
 - Nothing switches shells automatically. If the selected shell is unavailable, the command fails with an error naming it rather than running somewhere else — including when PowerShell is the default. `pwsh` (PowerShell 7) is not selected automatically either.
@@ -249,13 +249,13 @@ For non-interactive use — scripts, CI, code review pipelines:
 
 ```sh
 # run one task and print the final response
-loongcode -p "explain what this project does" /path/to/project
+icode-agent -p "explain what this project does" /path/to/project
 
 # emit every runtime event as JSON lines (for tooling)
-loongcode --mode json -p "find all TODO comments" /path/to/project
+icode-agent --mode json -p "find all TODO comments" /path/to/project
 
 # continue the most recent session in this workspace
-loongcode -c -p "now fix the issue you found" /path/to/project
+icode-agent -c -p "now fix the issue you found" /path/to/project
 ```
 
 ## FAQ
@@ -263,24 +263,24 @@ loongcode -c -p "now fix the issue you found" /path/to/project
 <details>
 <summary><strong>Which models can I use?</strong></summary>
 
-LoongCode speaks the `openai` and `anthropic` protocols, so it works with the
+iCode Agent speaks the `openai` and `anthropic` protocols, so it works with the
 official APIs and with any compatible endpoint. Configure one with `/model`, or
-edit `~/.loongcode/models.json` directly.
+edit `~/.icode-agent/models.json` directly.
 
 </details>
 
 <details>
 <summary><strong>Do I need Bun?</strong></summary>
 
-No. Bun is the development runtime for working on LoongCode itself. The
+No. Bun is the development runtime for working on iCode Agent itself. The
 published package runs on Node.js 22 or newer.
 
 </details>
 
 <details>
-<summary><strong>Does LoongCode send my code anywhere?</strong></summary>
+<summary><strong>Does iCode Agent send my code anywhere?</strong></summary>
 
-LoongCode runs locally and talks only to the model endpoint you configure, using
+iCode Agent runs locally and talks only to the model endpoint you configure, using
 the API key you provide. Your source is sent to that endpoint as context for the
 tasks you run; the model provider's own data policy applies.
 
@@ -289,14 +289,14 @@ tasks you run; the model provider's own data policy applies.
 <details>
 <summary><strong>What does it cost to run?</strong></summary>
 
-LoongCode itself is free and open source (Apache-2.0). You pay only your model
-provider for the tokens you use — and LoongCode is built to keep that number
+iCode Agent itself is free and open source (Apache-2.0). You pay only your model
+provider for the tokens you use — and iCode Agent is built to keep that number
 down on long tasks. See [Context that lasts](#context-that-lasts).
 
 </details>
 
 <details>
-<summary><strong>How does LoongCode keep token usage down?</strong></summary>
+<summary><strong>How does iCode Agent keep token usage down?</strong></summary>
 
 Context is managed at every boundary. Output is capped as it is produced, older
 tool results are reduced only when a request would exceed its budget, and
@@ -320,7 +320,7 @@ keeps every result. See [Context that lasts](#context-that-lasts).
 <details>
 <summary><strong>Where is my work saved?</strong></summary>
 
-Sessions are saved automatically under your config directory (`~/.loongcode/`).
+Sessions are saved automatically under your config directory (`~/.icode-agent/`).
 Resume the latest with `--continue`, a specific one with `--resume <id>`, or
 manage them interactively with `/session`.
 
@@ -329,7 +329,7 @@ manage them interactively with `/session`.
 <details>
 <summary><strong>Is it ready for production use?</strong></summary>
 
-LoongCode is in early experimental development. See [Status](#status) for the
+iCode Agent is in early experimental development. See [Status](#status) for the
 current version and [CHANGELOG.md](CHANGELOG.md) for what is included.
 
 </details>
@@ -344,12 +344,12 @@ This README covers the product end to end. For more detail:
 
 ## Status
 
-**Early experimental development.** LoongCode is under active development. The current version is v0.1.3 — see [CHANGELOG.md](CHANGELOG.md) for what is included.
+**Early experimental development.** iCode Agent is under active development. The current version is v0.3.0 — see [CHANGELOG.md](CHANGELOG.md) for what is included.
 
 ## Contributing
 
-LoongCode is developed in the open. Bug reports and feature requests are welcome
-in [GitHub issues](https://github.com/LoongLab/LoongCode/issues). If you build
+iCode Agent is developed in the open. Bug reports and feature requests are welcome
+in [GitHub issues](https://github.com/icodehq/icode-agent/issues). If you build
 something interesting with it, we'd love to hear about it.
 
 Participation in the project is governed by our [Code of Conduct](CODE_OF_CONDUCT.md).

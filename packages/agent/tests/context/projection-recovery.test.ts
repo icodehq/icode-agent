@@ -11,7 +11,7 @@ import { describe, expect, test } from "bun:test"
 import { mkdtempSync, rmSync, unlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import type { ModelMessage } from "@loongcode/model"
+import type { ModelMessage } from "@icodehq/model"
 import { estimateTokens } from "../../src/context/budget"
 import type { PruneStats, ProjectionMessage } from "../../src/context/projection"
 import { isPrunedToolOutput, pruneOldToolOutputs } from "../../src/context/projection"
@@ -314,7 +314,7 @@ describe("a source route is offered only while its file is intact", () => {
     const history: ProjectionMessage[] = [
       user("task"),
       call("c1", "bash", { command: "generate" }),
-      answer("c1", "bash", "captured output ".repeat(300), { externalizedAt: "/tmp/loongcode-tool-output/c1.txt" }),
+      answer("c1", "bash", "captured output ".repeat(300), { externalizedAt: "/tmp/icode-agent-tool-output/c1.txt" }),
       ...readTurn("c2", "/notes/b.md", "b".repeat(4_000)),
       call("w1", "write", { filePath: "/notes/b.md", content: "rewritten" }),
       answer("w1", "write", "written"),
@@ -325,7 +325,7 @@ describe("a source route is offered only while its file is intact", () => {
     const withheld = markers(pruneOldToolOutputs(history, { inputBudget: 100_000, forced: true }))
 
     // The spill still holds what was captured, while c2's path no longer does.
-    expect(withheld.map(marker => marker.value.spillPath)).toEqual(["/tmp/loongcode-tool-output/c1.txt"])
+    expect(withheld.map(marker => marker.value.spillPath)).toEqual(["/tmp/icode-agent-tool-output/c1.txt"])
     expect(withheld.map(marker => marker.value.sourcePath)).toEqual([undefined])
   })
 
@@ -356,7 +356,7 @@ describe("a source route is offered only while its file is intact", () => {
     // The limitation, pinned as a test rather than described in a comment: a
     // path route is a pointer, not a copy, so content that changed since the
     // read cannot be reconstructed from it. Nothing may claim otherwise.
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-projection-drift-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-projection-drift-"))
     try {
       const filePath = join(dir, "notes.md")
       writeFileSync(filePath, "FIRST VERSION\n")
@@ -408,7 +408,7 @@ describe("a reduced projection is still a valid request", () => {
           { toolCallId: "c2", toolName: "bash", output: { type: "text", text: "spilled".repeat(500) } },
           { toolCallId: "c3", toolName: "read", output: { type: "text", text: "b".repeat(4_000) } },
         ],
-        affordances: { c2: { externalizedAt: "/tmp/loongcode-tool-output/c2.txt" } },
+        affordances: { c2: { externalizedAt: "/tmp/icode-agent-tool-output/c2.txt" } },
       },
       ...readTurn("c4", "/notes/c.md", "c".repeat(4_000)),
       ...readTurn("c5", "/notes/d.md", "d".repeat(4_000)),
@@ -420,7 +420,7 @@ describe("a reduced projection is still a valid request", () => {
     const withheld = markers(projected)
     expect(withheld.map(marker => marker.value.toolName)).toEqual(["read", "bash", "read"])
     expect(withheld.map(marker => marker.value.sourcePath)).toEqual(["/notes/a.md", undefined, "/notes/b.md"])
-    expect(withheld[1]!.value.spillPath).toBe("/tmp/loongcode-tool-output/c2.txt")
+    expect(withheld[1]!.value.spillPath).toBe("/tmp/icode-agent-tool-output/c2.txt")
 
     // The message shape is untouched, and no result was handed a sibling's call.
     const { calls, results } = pairing(projected)
@@ -556,7 +556,7 @@ describe("a reduced projection is still a valid request", () => {
 
 describe("a withheld result's way back is a real one", () => {
   test("the stated path still holds the content, and a missing file fails explicitly", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-projection-recovery-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-projection-recovery-"))
     try {
       const filePath = join(dir, "notes.md")
       writeFileSync(filePath, "the actual content\n")

@@ -1,19 +1,19 @@
 {
-  "name": "@loonglab/loongcode-cli",
-  "version": "0.2.2",
-  "description": "LoongCode — a terminal coding agent that works directly in your repository",
+  "name": "@icodehq/icode-agent",
+  "version": "0.3.0",
+  "description": "iCode Agent — a terminal coding agent that works directly in your repository",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LoongLab/LoongCode.git",
+    "url": "git+https://github.com/icodehq/icode-agent.git",
     "directory": "packages/cli"
   },
   "bugs": {
-    "url": "https://github.com/LoongLab/LoongCode/issues"
+    "url": "https://github.com/icodehq/icode-agent/issues"
   },
   "type": "module",
   "bin": {
-    "loongcode": "dist/loongcode.js"
+    "icode-agent": "dist/icode-agent.js"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -32,9 +32,9 @@
   "devDependencies": {
     "@ai-sdk/anthropic": "4.0.58",
     "@ai-sdk/openai": "4.0.71",
-    "@loongcode/agent": "workspace:*",
-    "@loongcode/model": "workspace:*",
-    "@loongcode/tui": "workspace:*",
+    "@icodehq/agent": "workspace:*",
+    "@icodehq/model": "workspace:*",
+    "@icodehq/tui": "workspace:*",
     "ai": "7.0.107",
     "diff": "9.0.0",
     "get-east-asian-width": "1.6.0",

@@ -5,8 +5,8 @@ import type {
   ModelResponse,
   ModelToolCall,
   ModelUsage,
-} from "@loongcode/model"
-import { ModelError } from "@loongcode/model"
+} from "@icodehq/model"
+import { ModelError } from "@icodehq/model"
 import type { Skill } from "../config/resources"
 import type { WindowsShell } from "../config/settings"
 import { contextBudget, estimateTokens } from "../context/budget"
@@ -132,7 +132,7 @@ function abortableDelay(ms: number, signal?: AbortSignal): Promise<boolean> {
  *   tool output from the request projection
  * - tool failures never terminate the run — the model sees them as results
  *
- * The model is the `@loongcode/model` boundary: no provider or SDK type
+ * The model is the `@icodehq/model` boundary: no provider or SDK type
  * appears here.
  */
 export class AgentLoop {

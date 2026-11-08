@@ -3,7 +3,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import cliManifest from "../package.json" with { type: "json" }
-import { LOONGCODE_VERSION } from "./version"
+import { ICODE_AGENT_VERSION } from "./version"
 import { helpText, runCli, type CliIO } from "./main"
 
 interface Captured {
@@ -27,13 +27,13 @@ function capture(stdinIsTTY: boolean): Captured {
 }
 
 function tempDir(): string {
-  return mkdtempSync(join(tmpdir(), "loongcode-cli-test-"))
+  return mkdtempSync(join(tmpdir(), "icode-agent-cli-test-"))
 }
 
 describe("CLI help", () => {
   test("describes the product command, not a development path", () => {
     const help = helpText()
-    expect(help).toContain("usage: loongcode [options] [workspace]")
+    expect(help).toContain("usage: icode-agent [options] [workspace]")
     expect(help).not.toContain("bun packages/")
     expect(help).not.toContain("main.ts")
   })
@@ -49,7 +49,7 @@ describe("CLI help", () => {
     for (const flag of ["--help", "-h"]) {
       const c = capture(false)
       expect(await runCli([flag], c.io)).toBe(0)
-      expect(c.stdout()).toContain("usage: loongcode")
+      expect(c.stdout()).toContain("usage: icode-agent")
       expect(c.stderr()).toBe("")
     }
   })
@@ -60,28 +60,28 @@ describe("CLI version", () => {
     for (const flag of ["--version", "-v"]) {
       const c = capture(false)
       expect(await runCli([flag], c.io)).toBe(0)
-      expect(c.stdout()).toBe(LOONGCODE_VERSION + "\n")
+      expect(c.stdout()).toBe(ICODE_AGENT_VERSION + "\n")
       expect(c.stderr()).toBe("")
     }
   })
 
   test("agrees with the published CLI package manifest", () => {
-    expect(LOONGCODE_VERSION).toBe(cliManifest.version)
+    expect(ICODE_AGENT_VERSION).toBe(cliManifest.version)
   })
 
   test("the executable and the build output are the same entry point", () => {
     const rootManifest = JSON.parse(readFileSync(join(import.meta.dir, "../../../package.json"), "utf-8"))
     const outfile = (rootManifest.scripts["build:cli"] as string).match(/--outfile (\S+)/)![1]
-    expect(Object.keys(cliManifest.bin)).toEqual(["loongcode"])
+    expect(Object.keys(cliManifest.bin)).toEqual(["icode-agent"])
     // The published bin and what the build actually writes cannot drift apart.
-    expect(outfile).toBe(`packages/cli/${cliManifest.bin["loongcode"]}`)
+    expect(outfile).toBe(`packages/cli/${cliManifest.bin["icode-agent"]}`)
   })
 
   test("agrees with the newest changelog release", () => {
     const changelog = readFileSync(join(import.meta.dir, "../../../CHANGELOG.md"), "utf-8")
     const firstRelease = changelog.match(/^## \[(\d+\.\d+\.\d+)\]/m)
     expect(firstRelease).not.toBeNull()
-    expect(firstRelease![1]).toBe(LOONGCODE_VERSION)
+    expect(firstRelease![1]).toBe(ICODE_AGENT_VERSION)
   })
 })
 
@@ -93,7 +93,7 @@ describe("CLI interactive guard", () => {
     // Nothing may be written to stdout: a refused start must not paint the UI.
     expect(c.stdout()).toBe("")
     expect(c.stderr()).toContain("stdin is not a terminal")
-    expect(c.stderr()).toContain("loongcode -p")
+    expect(c.stderr()).toContain("icode-agent -p")
   })
 
   test("the guard applies to a workspace argument too", async () => {
@@ -109,8 +109,8 @@ describe("CLI interactive guard", () => {
 
   test("the no-model failure is actionable, and holds nothing internal", async () => {
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       const c = capture(false)
       const outcome = await runCli(["-p", "hello", dir], c.io).catch((err: unknown) => err as Error)
@@ -123,10 +123,10 @@ describe("CLI interactive guard", () => {
       expect(message).toContain(join(dir, "models.json"))
       expect(message).not.toContain('"version"')
       expect(message).not.toContain("restart")
-      expect(message).not.toContain("LoongCode(")
+      expect(message).not.toContain("ICodeAgent(")
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })
@@ -141,7 +141,7 @@ describe("CLI interactive guard", () => {
       // only runs in a real process — so this drives a real one.
       const proc = Bun.spawn(
         [process.execPath, join(import.meta.dir, "main.ts"), "-p", "hello"],
-        { env: { ...process.env, LOONGCODE_CONFIG_DIR: dir }, stdout: "pipe", stderr: "pipe" },
+        { env: { ...process.env, ICODE_AGENT_CONFIG_DIR: dir }, stdout: "pipe", stderr: "pipe" },
       )
       const code = await proc.exited
       const stdout = await new Response(proc.stdout).text()
@@ -160,8 +160,8 @@ describe("CLI interactive guard", () => {
 
   test("print mode is not blocked by the guard", async () => {
     const dir = tempDir()
-    const previous = process.env.LOONGCODE_CONFIG_DIR
-    process.env.LOONGCODE_CONFIG_DIR = dir
+    const previous = process.env.ICODE_AGENT_CONFIG_DIR
+    process.env.ICODE_AGENT_CONFIG_DIR = dir
     try {
       const c = capture(false)
       // No model is configured in the isolated config dir, so this fails on
@@ -170,8 +170,8 @@ describe("CLI interactive guard", () => {
       expect(String(outcome)).toMatch(/No active model configured/)
       expect(c.stderr()).not.toContain("stdin is not a terminal")
     } finally {
-      if (previous === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-      else process.env.LOONGCODE_CONFIG_DIR = previous
+      if (previous === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+      else process.env.ICODE_AGENT_CONFIG_DIR = previous
       rmSync(dir, { recursive: true, force: true })
     }
   })

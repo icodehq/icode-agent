@@ -1,4 +1,4 @@
-import type { Model, ModelMessage, ModelUsage } from "@loongcode/model"
+import type { Model, ModelMessage, ModelUsage } from "@icodehq/model"
 import { contextBudget, estimateTokens } from "./budget"
 import type { Session } from "../session/session"
 import type { CompactionSkipReason, SessionMessage } from "../session/types"

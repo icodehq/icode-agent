@@ -3,32 +3,32 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "loongcode",
+      "name": "icode-agent",
       "devDependencies": {
         "@types/bun": "1.3.13",
         "typescript": "5.9.3",
       },
     },
     "packages/agent": {
-      "name": "@loongcode/agent",
+      "name": "@icodehq/agent",
       "version": "0.1.0",
       "dependencies": {
-        "@loongcode/model": "workspace:*",
+        "@icodehq/model": "workspace:*",
         "diff": "9.0.0",
       },
     },
     "packages/cli": {
-      "name": "@loonglab/loongcode-cli",
-      "version": "0.1.3",
+      "name": "@icodehq/icode-agent",
+      "version": "0.3.0",
       "bin": {
-        "loongcode": "dist/loongcode.js",
+        "icode-agent": "dist/icode-agent.js",
       },
       "devDependencies": {
         "@ai-sdk/anthropic": "4.0.58",
         "@ai-sdk/openai": "4.0.71",
-        "@loongcode/agent": "workspace:*",
-        "@loongcode/model": "workspace:*",
-        "@loongcode/tui": "workspace:*",
+        "@icodehq/agent": "workspace:*",
+        "@icodehq/model": "workspace:*",
+        "@icodehq/tui": "workspace:*",
         "ai": "7.0.107",
         "diff": "9.0.0",
         "get-east-asian-width": "1.6.0",
@@ -37,7 +37,7 @@
       },
     },
     "packages/model": {
-      "name": "@loongcode/model",
+      "name": "@icodehq/model",
       "version": "0.1.0",
       "dependencies": {
         "@ai-sdk/anthropic": "4.0.58",
@@ -47,7 +47,7 @@
       },
     },
     "packages/tui": {
-      "name": "@loongcode/tui",
+      "name": "@icodehq/tui",
       "version": "0.1.0",
       "dependencies": {
         "get-east-asian-width": "1.6.0",
@@ -66,13 +66,13 @@
 
     "@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@5.0.45", "", { "dependencies": { "@ai-sdk/provider": "4.0.17", "@standard-schema/spec": "^1.1.0", "@workflow/serde": "4.1.0", "eventsource-parser": "^3.0.8", "undici": "^7.29.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-gLuaCups8OCIRz3eO6WWz5op7VLYNNtFzyH0sWUr0FE9v7cTxR0qxDpQdrKnGcql+9WWttobjnZsJVsuEbsPQQ=="],
 
-    "@loongcode/agent": ["@loongcode/agent@workspace:packages/agent"],
+    "@icodehq/agent": ["@icodehq/agent@workspace:packages/agent"],
 
-    "@loongcode/model": ["@loongcode/model@workspace:packages/model"],
+    "@icodehq/icode-agent": ["@icodehq/icode-agent@workspace:packages/cli"],
 
-    "@loongcode/tui": ["@loongcode/tui@workspace:packages/tui"],
+    "@icodehq/model": ["@icodehq/model@workspace:packages/model"],
 
-    "@loonglab/loongcode-cli": ["@loonglab/loongcode-cli@workspace:packages/cli"],
+    "@icodehq/tui": ["@icodehq/tui@workspace:packages/tui"],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 

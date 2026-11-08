@@ -1,4 +1,4 @@
-import type { ModelMessage, ModelToolOutput, ModelToolResult } from "@loongcode/model"
+import type { ModelMessage, ModelToolOutput, ModelToolResult } from "@icodehq/model"
 import { estimateTokens } from "./budget"
 import { normalizePath, resolveToolPath, type ToolAffordances } from "../tools/types"
 
@@ -9,7 +9,7 @@ import { normalizePath, resolveToolPath, type ToolAffordances } from "../tools/t
  * happen to exist today: a future tool that legitimately emits
  * `{ pruned: true }` as genuine `json` output cannot be misread as a marker.
  */
-const PRUNED_KEY = "loongcodePruned"
+const PRUNED_KEY = "icodeAgentPruned"
 
 /** The only reason a result is reduced: the request does not fit its budget. */
 export type PruneReason = "request-over-budget"

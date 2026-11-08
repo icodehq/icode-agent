@@ -1,19 +1,19 @@
-# LoongCode
+# iCode Agent
 
 [English](README.md) | 简体中文 | [한국어](README.ko.md) | [日本語](README.ja.md)
 
-LoongCode 是一个专注的编码智能体，直接在你的代码仓库里工作。给它一个软件任务——修复失败的测试、重构一个模块、定位一个缺陷——它会阅读代码、进行修改、执行命令并自行验证结果，而你可以在终端里实时观察并随时调整它的方向。
+iCode Agent 是一个专注的编码智能体，直接在你的代码仓库里工作。给它一个软件任务——修复失败的测试、重构一个模块、定位一个缺陷——它会阅读代码、进行修改、执行命令并自行验证结果，而你可以在终端里实时观察并随时调整它的方向。
 
-LoongCode 刻意保持专注：它是用来完成软件工程工作的工具，而不是一个通用的 AI 助手。
+iCode Agent 刻意保持专注：它是用来完成软件工程工作的工具，而不是一个通用的 AI 助手。
 
 ## 它能做什么？
 
-给 LoongCode 一个任务，它可以：
+给 iCode Agent 一个任务，它可以：
 
 - 探索陌生的代码仓库——列出、查找、搜索文件和代码；
 - 带行号、分页地阅读文件，并以安全的、带 diff 审查的方式修改它们；
 - 创建新文件，执行 shell 命令（测试、构建、git，任何命令）；
-- 应对失败的测试和损坏的构建——失败是一种信息，LoongCode 会持续修复并重新验证；
+- 应对失败的测试和损坏的构建——失败是一种信息，iCode Agent 会持续修复并重新验证；
 - 自主进行多轮迭代，直到任务完成或确实需要你的帮助；
 - 在终端里实时展示它正在做的一切。
 
@@ -22,7 +22,7 @@ LoongCode 刻意保持专注：它是用来完成软件工程工作的工具，�
 ```text
 你：  修复这个仓库里失败的测试。
 
-LoongCode:
+iCode Agent:
   ▸ read src/math.ts
   ✓ read src/math.ts
   ▸ bash bun test math.test.ts
@@ -37,41 +37,41 @@ LoongCode:
 
 主动权始终在你手里：随时可以中断，也可以在任务进行中输入新的指示来调整它的方向。
 
-## 为什么选择 LoongCode？
+## 为什么选择 iCode Agent？
 
-编码智能体会把大量精力花在探索和执行上——读文件、搜索、反复重读、反复重试——而这些往往发生在它真正改动一行代码之前。LoongCode 就是为了让这个循环顺畅运转而构建的：
+编码智能体会把大量精力花在探索和执行上——读文件、搜索、反复重读、反复重试——而这些往往发生在它真正改动一行代码之前。iCode Agent 就是为了让这个循环顺畅运转而构建的：
 
 - 智能体基于真实的仓库状态进行迭代，而不是基于对仓库的描述；
 - 编码循环可见、可引导——你能看到它在做什么，并能在它工作的过程中改变方向；
 - 验证是工作流的一部分：智能体应当运行你的测试来证明自己的修改，而不是口头宣称成功；
 - 上下文被有意识地管理，长会话会被总结，而不是悄悄溢出。
 
-LoongCode 刻意专注于软件开发，它并不打算成为一个通用的 AI 助手。
+iCode Agent 刻意专注于软件开发，它并不打算成为一个通用的 AI 助手。
 
 ## 快速开始
 
-**前提条件：** [Node.js](https://nodejs.org) 22 或更高版本（随附 npm）。LoongCode 是单一的平台无关包，这一条安装命令在 Windows、macOS、Linux 的 x64 与 arm64 上都可用。
+**前提条件：** [Node.js](https://nodejs.org) 22 或更高版本（随附 npm）。iCode Agent 是单一的平台无关包，这一条安装命令在 Windows、macOS、Linux 的 x64 与 arm64 上都可用。
 
 跨平台兼容性改进已经实现，自动化验证已在 Linux 上完成；原生 Windows 与 macOS 的验证尚未进行。
 
 ```sh
-npm install -g @loonglab/loongcode-cli
+npm install -g @icodehq/icode-agent
 cd ~/my-project
-loongcode
+icode-agent
 ```
 
 首次启动时没有配置模型，使用 `/model` 完成配置，然后输入任务。
 
 ### 从源码运行
 
-要开发 LoongCode 本身，可以从检出运行：
+要开发 iCode Agent 本身，可以从检出运行：
 
 ```sh
-git clone https://github.com/LoongLab/LoongCode.git
-cd LoongCode
+git clone https://github.com/icodehq/icode-agent.git
+cd icode-agent
 bun install
 
-# 在你的项目中启动 LoongCode
+# 在你的项目中启动 iCode Agent
 bun ./packages/cli/src/main.ts /path/to/your/project
 ```
 
@@ -81,7 +81,7 @@ bun ./packages/cli/src/main.ts /path/to/your/project
 
 ## 配置模型
 
-LoongCode 支持两种协议，因此既可以对接官方 API，也可以对接任何兼容的 endpoint：
+iCode Agent 支持两种协议，因此既可以对接官方 API，也可以对接任何兼容的 endpoint：
 
 | 协议 | 典型用途 |
 | --- | --- |
@@ -98,7 +98,7 @@ LoongCode 支持两种协议，因此既可以对接官方 API，也可以对接
 `/model` 是唯一交互式模型界面。添加模型时会询问协议、endpoint、提供商模型和 API key，上下文窗口与最大输出 token 采用合理的默认值（可通过可选的 `Configure limits…` 步骤调整）。
 
 配置保存在你的配置目录下
-（`~/.loongcode/models.json`）——你也可以直接编辑这个文件。
+（`~/.icode-agent/models.json`）——你也可以直接编辑这个文件。
 
 ## 与智能体协作
 
@@ -113,7 +113,7 @@ LoongCode 支持两种协议，因此既可以对接官方 API，也可以对接
 
 你的工作会自动保存。退出之后随时可以回来——`--continue` 继续该工作区中最近的会话，`--resume <id>` 恢复指定的会话。TUI 内的 `/session` 会打开一个针对当前工作区的交互式管理器，可以打开、搜索、重命名、删除、分叉、复制以及浏览相关会话。
 
-如果 LoongCode 在任务中途被中断，下次启动时会自动对中断的工作进行调和：已完成的步骤会保留，未完成的会被如实报告，你可以从停止的地方继续。
+如果 iCode Agent 在任务中途被中断，下次启动时会自动对中断的工作进行调和：已完成的步骤会保留，未完成的会被如实报告，你可以从停止的地方继续。
 
 ### 斜杠命令
 
@@ -129,7 +129,7 @@ LoongCode 支持两种协议，因此既可以对接官方 API，也可以对接
 
 ## 项目指令
 
-LoongCode 会读取仓库根目录下的指令文件，在开始工作之前了解你项目的约定：
+iCode Agent 会读取仓库根目录下的指令文件，在开始工作之前了解你项目的约定：
 
 - `AGENTS.override.md` — 存在时优先使用
 - `AGENTS.md`
@@ -137,7 +137,7 @@ LoongCode 会读取仓库根目录下的指令文件，在开始工作之前了�
 
 找到的第一个文件会被加载进智能体的系统提示词，因此从第一条消息开始，智能体就会遵循你项目的规则。
 
-你还可以添加项目本地的**提示词模板**（`.loongcode/prompts/*.md`）和**技能**（`.loongcode/skills/<name>/SKILL.md`）。这些内容会自动加载。全局配置位于 `~/.loongcode/settings.json`，并可在项目的 `.loongcode/settings.json` 中覆盖。
+你还可以添加项目本地的**提示词模板**（`.icode-agent/prompts/*.md`）和**技能**（`.icode-agent/skills/<name>/SKILL.md`）。这些内容会自动加载。全局配置位于 `~/.icode-agent/settings.json`，并可在项目的 `.icode-agent/settings.json` 中覆盖。
 
 ## Windows shell
 
@@ -154,7 +154,7 @@ LoongCode 会读取仓库根目录下的指令文件，在开始工作之前了�
 | `"powershell"`（默认） | `powershell.exe`，以 `-NoLogo -NoProfile -NonInteractive` 启动 |
 | `"cmd"` | `cmd.exe`，取自 `%ComSpec%` |
 
-- 该设置是全局的（`~/.loongcode/settings.json`），可在项目内（`.loongcode/settings.json`）覆盖，项目中的值优先生效，因此显式设置不会被默认值取代。
+- 该设置是全局的（`~/.icode-agent/settings.json`），可在项目内（`.icode-agent/settings.json`）覆盖，项目中的值优先生效，因此显式设置不会被默认值取代。
 - 它只影响 Windows。其他平台始终使用 `/bin/sh` 运行命令。
 - CMD 与 PowerShell 是两种不同的语言：语法、内置命令和脚本互不通用，两者也都没有 POSIX 命令（`ls`、`cat`、`grep` 等）。智能体会被告知当前生效的是哪个 shell，因此会按实际运行的那个来编写命令。
 - 不会自动切换 shell。所选 shell 不可用时，命令会失败并指出是哪一个，而不会改用其他 shell 执行（默认的 PowerShell 也不例外）；也不会自动选用 `pwsh`（PowerShell 7）。
@@ -166,18 +166,18 @@ LoongCode 会读取仓库根目录下的指令文件，在开始工作之前了�
 
 ```sh
 # 运行一个任务并打印最终回复
-loongcode -p "解释这个项目是做什么的" /path/to/project
+icode-agent -p "解释这个项目是做什么的" /path/to/project
 
 # 将每个运行时事件输出为 JSON 行（供工具处理）
-loongcode --mode json -p "找出所有 TODO 注释" /path/to/project
+icode-agent --mode json -p "找出所有 TODO 注释" /path/to/project
 
 # 继续该工作区中最近的会话
-loongcode -c -p "现在修复你发现的问题" /path/to/project
+icode-agent -c -p "现在修复你发现的问题" /path/to/project
 ```
 
 ## 当前状态
 
-**状态：早期实验开发阶段。** LoongCode 仍在积极开发中。当前版本为 v0.1.3——包含的内容见 [CHANGELOG.md](CHANGELOG.md)。
+**状态：早期实验开发阶段。** iCode Agent 仍在积极开发中。当前版本为 v0.3.0——包含的内容见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 许可证
 

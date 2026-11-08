@@ -6,7 +6,7 @@ import { expandFileReferences, resolveReferencePath } from "./expand"
 
 describe("@file expansion", () => {
   test("expands an existing file reference into a marked block", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-expand-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-expand-"))
     try {
       writeFileSync(join(dir, "notes.md"), "# Notes\nthe payload")
       const expanded = expandFileReferences("review @notes.md please", dir)
@@ -20,7 +20,7 @@ describe("@file expansion", () => {
   })
 
   test("leaves unresolved references untouched", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-expand-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-expand-"))
     try {
       const expanded = expandFileReferences("email me @someone about @missing.txt", dir)
       expect(expanded).toContain("@someone")
@@ -31,7 +31,7 @@ describe("@file expansion", () => {
   })
 
   test("truncates oversized files", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-expand-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-expand-"))
     try {
       writeFileSync(join(dir, "big.txt"), "x".repeat(300 * 1024))
       const expanded = expandFileReferences("see @big.txt", dir)
@@ -42,7 +42,7 @@ describe("@file expansion", () => {
   })
 
   test("expands a quoted reference whose path contains spaces", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-expand-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-expand-"))
     try {
       mkdirSync(join(dir, "docs"), { recursive: true })
       writeFileSync(join(dir, "docs", "my notes.md"), "the payload")
@@ -57,7 +57,7 @@ describe("@file expansion", () => {
   })
 
   test("an unquoted reference still stops at the first space", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-expand-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-expand-"))
     try {
       writeFileSync(join(dir, "a.txt"), "A")
       writeFileSync(join(dir, "b.txt"), "B")
@@ -71,7 +71,7 @@ describe("@file expansion", () => {
   })
 
   test("an unresolvable quoted reference is left exactly as written", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-expand-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-expand-"))
     try {
       const text = 'see @"no such file.md" here'
       expect(expandFileReferences(text, dir)).toBe(text)
@@ -81,7 +81,7 @@ describe("@file expansion", () => {
   })
 
   test("an email address is still never a reference", () => {
-    const dir = mkdtempSync(join(tmpdir(), "loongcode-expand-"))
+    const dir = mkdtempSync(join(tmpdir(), "icode-agent-expand-"))
     try {
       const text = "write to someone@example.com about it"
       expect(expandFileReferences(text, dir)).toBe(text)

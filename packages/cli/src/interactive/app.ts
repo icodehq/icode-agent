@@ -10,16 +10,16 @@ import {
 	type Terminal,
 	matchesKey,
 	type Component,
-} from "@loongcode/tui"
+} from "@icodehq/tui"
 import { spawnSync } from "node:child_process"
 import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
-import { ModelError, testModelConnection } from "@loongcode/model"
-import type { Model, ModelConfig, ModelLimits, ModelMessage, ModelProtocol } from "@loongcode/model"
-import type { Checkpoint, LoongCode, RewindNote, RunEvent, Session, SessionMessage } from "@loongcode/agent"
-import { CheckpointStore } from "@loongcode/agent"
-import { discardTurns, liveCheckpoints, recordRewind, rewindSession, summarizeRange, turnIndexOf, type CheckpointAdvance } from "@loongcode/agent"
-import { configDir, listPromptTemplates, loadSettings } from "@loongcode/agent"
+import { ModelError, testModelConnection } from "@icodehq/model"
+import type { Model, ModelConfig, ModelLimits, ModelMessage, ModelProtocol } from "@icodehq/model"
+import type { Checkpoint, ICodeAgent, RewindNote, RunEvent, Session, SessionMessage } from "@icodehq/agent"
+import { CheckpointStore } from "@icodehq/agent"
+import { discardTurns, liveCheckpoints, recordRewind, rewindSession, summarizeRange, turnIndexOf, type CheckpointAdvance } from "@icodehq/agent"
+import { configDir, listPromptTemplates, loadSettings } from "@icodehq/agent"
 import { ansi, initTheme, markdownTheme, setThemeScheme, theme } from "./view/theme"
 import {
 	NO_RUN_DISPLAY,
@@ -40,7 +40,7 @@ import { Selector, PickerSlot, pickerVisibleItems, type SelectorItem } from "./v
 import { SessionManager, type SessionManagerAction } from "./view/session-manager"
 import { workspaceSessions, type ScopedSessionSummary } from "./session/scope"
 import { cloneSession, forkCandidates, forkSession } from "./session/operations"
-import { LoongCodeAutocomplete } from "./input/autocomplete"
+import { ICodeAgentAutocomplete } from "./input/autocomplete"
 import { composerGhostText } from "./input/argument-placeholder"
 import { altEnterAsNewline } from "./input/alt-enter"
 import { expandFileReferences } from "./input/expand"
@@ -55,8 +55,8 @@ import {
 	userMessage,
 } from "./view/components"
 
-export interface LoongCodeTuiOptions {
-	agent: LoongCode
+export interface ICodeAgentTuiOptions {
+	agent: ICodeAgent
 	session: Session
 	/** Window title / header label (typically the workspace path). */
 	label?: string
@@ -90,7 +90,7 @@ export type SlashInput =
  */
 function readPromptTemplate(cwd: string, name: string): string | null {
 	const userDir = join(configDir(), "prompts")
-	for (const dir of [join(cwd, ".loongcode", "prompts"), userDir]) {
+	for (const dir of [join(cwd, ".icode-agent", "prompts"), userDir]) {
 		try {
 			return readFileSync(join(dir, `${name}.md`), "utf-8")
 		} catch {
@@ -131,9 +131,9 @@ interface AskState {
 }
 
 /**
- * The LoongCode fullscreen TUI.
+ * The iCode Agent fullscreen TUI.
  * The runtime is the source of truth: `RunEvent`s map 1:1 onto component
- * updates and the editor submits through the existing `LoongCode.run()`.
+ * updates and the editor submits through the existing `ICodeAgent.run()`.
  *
  * The conversation lives in an application-owned `ScrollView` (the only
  * scrolling region); the status, composer, and two footer rows are fixed to the
@@ -378,7 +378,7 @@ interface SetupRunOptions {
 	 *  that already carries a key. */
 	readonly keepExistingKey?: boolean
 	/** The run is an edit started from the workspace, so the first step's escape
-	 *  cancels back to it rather than offering to leave LoongCode — a user who
+	 *  cancels back to it rather than offering to leave ICodeAgent — a user who
 	 *  opened an edit has somewhere to return to. */
 	readonly cancelEdit?: boolean
 }
@@ -528,7 +528,7 @@ export type ModelReadiness =
  * layer, where `run` resolves the model itself and refuses to start without
  * one; a wrong answer here can only mis-word a failure, never cause a run.
  */
-export async function modelReadiness(agent: LoongCode): Promise<ModelReadiness> {
+export async function modelReadiness(agent: ICodeAgent): Promise<ModelReadiness> {
 	try {
 		const model = await agent.currentModel()
 		return model === undefined ? { kind: "missing" } : { kind: "ready", model }
@@ -552,7 +552,7 @@ function workspaceIssue(cwd: string): string | null {
 	}
 }
 
-export class LoongCodeTui {
+export class ICodeAgentTui {
 	private readonly tui: TuiAltScreen
 	/**
 	 * The conversation stack. Windowed: the viewport is laid out from the
@@ -699,7 +699,7 @@ export class LoongCodeTui {
 	private reasoning: Container | null = null
 	private readonly commandContext: CommandContext
 
-	constructor(private readonly options: LoongCodeTuiOptions) {
+	constructor(private readonly options: ICodeAgentTuiOptions) {
 		this.checkpointStore = new CheckpointStore(options.agent.sessionsDir)
 		// The setup panel changes its own content while it is hosted in the
 		// windowed conversation stack, so it announces its changes there.
@@ -919,7 +919,7 @@ export class LoongCodeTui {
 				if (busy !== undefined) return { status: "busy", reason: busy }
 				const model = await this.options.agent.currentModel()
 				if (model === undefined) return { status: "no-model" }
-				const { Compactor } = await import("@loongcode/agent")
+				const { Compactor } = await import("@icodehq/agent")
 				const compactor = new Compactor(model, model.limits.contextWindow)
 				// `runCompaction` brackets the awaited model call; its `finally`
 				// guarantees the state and spinner are cleared on success, failure,
@@ -1069,7 +1069,7 @@ export class LoongCodeTui {
 		// presentation; setup replaces the editor with its own field (see
 		// `updateEditorSlot`), so they are set here and toggled with the phase.
 		editor.setPrompt(COMPOSER_PROMPT)
-		editor.setAutocompleteProvider(new LoongCodeAutocomplete(
+		editor.setAutocompleteProvider(new ICodeAgentAutocomplete(
 			() => autocompleteItems(this.session.cwd),
 			() => this.session.cwd,
 		))
@@ -1372,7 +1372,7 @@ export class LoongCodeTui {
 				if (readiness.kind === "error" && readiness.message !== shownError) {
 					shownError = readiness.message
 					this.setupPanel.setContent({
-						heading: ["Model configuration", "LoongCode cannot read your model configuration."],
+						heading: ["Model configuration", "iCode Agent cannot read your model configuration."],
 						problem: readiness.message,
 						hints: "↑/↓ Select · Enter Confirm",
 					})
@@ -1428,7 +1428,7 @@ export class LoongCodeTui {
 	private async offerRecovery(againLabel: string, againDescription?: string): Promise<boolean> {
 		const choice = await this.commandContext.pick("Model setup", [
 			{ value: SETUP_AGAIN, label: againLabel, description: againDescription },
-			{ value: SETUP_EXIT, label: "Exit", description: "LoongCode cannot run tasks without a model" },
+			{ value: SETUP_EXIT, label: "Exit", description: "iCode Agent cannot run tasks without a model" },
 		])
 		if (choice === SETUP_AGAIN) return true
 		this.exitFromSetup()
@@ -1529,8 +1529,8 @@ export class LoongCodeTui {
 				{ value: "stay", label: editing ? "Continue editing" : "Continue setup" },
 				{
 					value: "exit",
-					label: editing ? "Cancel the edit" : "Exit LoongCode",
-					...(editing ? {} : { description: "LoongCode cannot run tasks without a model" }),
+					label: editing ? "Cancel the edit" : "Exit iCode Agent",
+					...(editing ? {} : { description: "iCode Agent cannot run tasks without a model" }),
 				},
 			],
 		)
@@ -1628,7 +1628,7 @@ export class LoongCodeTui {
 	private async setupLimitsStep(draft: SetupDraft, options: SetupRunOptions): Promise<SetupStep> {
 		for (;;) {
 			this.setupPanel.setContent({
-				heading: ["Model limits", "How much context LoongCode plans requests against."],
+				heading: ["Model limits", "How much context iCode Agent plans requests against."],
 				hints: "↑/↓ Select · Enter Next · Esc Back",
 			})
 			const choice = await this.setupPick("Model limits", [
@@ -1772,7 +1772,7 @@ export class LoongCodeTui {
 		})
 		const next = await this.setupPick("Save failed", [
 			{ value: "edit", label: "Return to Edit Configuration" },
-			{ value: "exit", label: "Exit LoongCode" },
+			{ value: "exit", label: "Exit iCode Agent" },
 		])
 		return next === "exit" ? "exit" : "model"
 	}
@@ -1797,7 +1797,7 @@ export class LoongCodeTui {
 		const choice = await this.setupPick("Model test failed", [
 			{ value: "edit", label: "Return to Edit Configuration" },
 			{ value: "retry", label: "Retry Test" },
-			{ value: "exit", label: "Exit LoongCode" },
+			{ value: "exit", label: "Exit iCode Agent" },
 		])
 		if (choice === "retry") return "test"
 		return choice === "exit" ? "exit" : "model"
@@ -1966,8 +1966,8 @@ export class LoongCodeTui {
 	private exitFromSetup(): void {
 		this.exiting = true
 		this.shutdown(this.pendingTask === null
-			? "loongcode: model setup was cancelled.\n"
-			: "loongcode: model setup was cancelled — your task was not run and has not been saved.\n")
+			? "icode-agent: model setup was cancelled.\n"
+			: "icode-agent: model setup was cancelled — your task was not run and has not been saved.\n")
 	}
 
 	/**

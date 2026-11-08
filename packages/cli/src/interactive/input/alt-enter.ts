@@ -1,4 +1,4 @@
-import { matchesKey } from "@loongcode/tui"
+import { matchesKey } from "@icodehq/tui"
 
 /**
  * Translate Alt+Enter into a newline input for the focused editor.

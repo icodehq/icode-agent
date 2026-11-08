@@ -146,7 +146,7 @@ describe("the simulated Windows path in the bash tool", () => {
     const path = process.env.PATH
     // This host may reach real Windows executables (a WSL interop PATH does),
     // so the shell binaries are made unresolvable rather than assumed absent.
-    process.env.PATH = "/nonexistent-loongcode-test-path"
+    process.env.PATH = "/nonexistent-icode-agent-test-path"
     Object.defineProperty(process, "platform", { value: "win32", configurable: true })
     try {
       // The failure must name the shell that was selected — never fall back to

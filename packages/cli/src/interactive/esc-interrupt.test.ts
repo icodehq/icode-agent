@@ -2,9 +2,9 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import type { Terminal } from "@loongcode/tui"
-import { LoongCode, type Session } from "@loongcode/agent"
-import { LoongCodeTui, modelReadiness } from "./app"
+import type { Terminal } from "@icodehq/tui"
+import { ICodeAgent, type Session } from "@icodehq/agent"
+import { ICodeAgentTui, modelReadiness } from "./app"
 import { parseScreen } from "./view/testing"
 import { hangingStream, openaiChunk, sse, startMockProvider } from "../../../model/src/test-support"
 
@@ -27,20 +27,20 @@ let sessionsDir: string
 let priorConfigDir: string | undefined
 
 beforeEach(() => {
-	root = mkdtempSync(join(tmpdir(), "loongcode-esc-"))
+	root = mkdtempSync(join(tmpdir(), "icode-agent-esc-"))
 	ws = join(root, "ws")
 	configDir = join(root, "config")
 	sessionsDir = join(root, "sessions")
 	mkdirSync(ws)
 	mkdirSync(configDir)
 	mkdirSync(sessionsDir)
-	priorConfigDir = process.env.LOONGCODE_CONFIG_DIR
-	process.env.LOONGCODE_CONFIG_DIR = configDir
+	priorConfigDir = process.env.ICODE_AGENT_CONFIG_DIR
+	process.env.ICODE_AGENT_CONFIG_DIR = configDir
 })
 
 afterEach(() => {
-	if (priorConfigDir === undefined) delete process.env.LOONGCODE_CONFIG_DIR
-	else process.env.LOONGCODE_CONFIG_DIR = priorConfigDir
+	if (priorConfigDir === undefined) delete process.env.ICODE_AGENT_CONFIG_DIR
+	else process.env.ICODE_AGENT_CONFIG_DIR = priorConfigDir
 	rmSync(root, { recursive: true, force: true })
 })
 
@@ -86,9 +86,9 @@ function createTerminal(columns = 100, rows = 30): Tty {
 const tick = (): Promise<void> => new Promise(r => setTimeout(r, 2))
 
 interface Harness {
-	readonly agent: LoongCode
+	readonly agent: ICodeAgent
 	readonly session: Session
-	readonly app: LoongCodeTui
+	readonly app: ICodeAgentTui
 	readonly tty: Tty
 }
 
@@ -105,10 +105,10 @@ const validConfig = (endpoint: string): string =>
 	})
 
 async function mount(columns = 100, rows = 30, session?: Session): Promise<Harness> {
-	const agent = new LoongCode({ sessionsDir })
+	const agent = new ICodeAgent({ sessionsDir })
 	const active = session ?? agent.createSession(ws)
 	const tty = createTerminal(columns, rows)
-	const app = new LoongCodeTui({
+	const app = new ICodeAgentTui({
 		agent,
 		session: active,
 		terminal: tty.terminal,
